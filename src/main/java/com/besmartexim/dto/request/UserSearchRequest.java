@@ -68,19 +68,19 @@ public class UserSearchRequest {
 	private List<String> stdUnitList;
 	
 	
-	private Integer rangeQuantityStart;
+	private Double rangeQuantityStart;
 	
-	private Integer rangeQuantityEnd;
+	private Double rangeQuantityEnd;
 	
 	private List<String> consumptionType;
 	
-	private Integer rangeValueUsdStart;
+	private Double rangeValueUsdStart;
 	
-	private Integer rangeValueUsdEnd;
+	private Double rangeValueUsdEnd;
 	
-	private Integer rangeUnitPriceUsdStart;
+	private Double rangeUnitPriceUsdStart;
 	
-	private Integer rangeUnitPriceUsdEnd;
+	private Double rangeUnitPriceUsdEnd;
 	
 	private List<String> incoterm;
 	
@@ -291,19 +291,19 @@ public class UserSearchRequest {
 		this.stdUnitList = stdUnitList;
 	}
 
-	public Integer getRangeQuantityStart() {
+	public Double getRangeQuantityStart() {
 		return rangeQuantityStart;
 	}
 
-	public void setRangeQuantityStart(Integer rangeQuantityStart) {
+	public void setRangeQuantityStart(Double rangeQuantityStart) {
 		this.rangeQuantityStart = rangeQuantityStart;
 	}
 
-	public Integer getRangeQuantityEnd() {
+	public Double getRangeQuantityEnd() {
 		return rangeQuantityEnd;
 	}
 
-	public void setRangeQuantityEnd(Integer rangeQuantityEnd) {
+	public void setRangeQuantityEnd(Double rangeQuantityEnd) {
 		this.rangeQuantityEnd = rangeQuantityEnd;
 	}
 
@@ -315,35 +315,35 @@ public class UserSearchRequest {
 		this.consumptionType = consumptionType;
 	}
 
-	public Integer getRangeValueUsdStart() {
+	public Double getRangeValueUsdStart() {
 		return rangeValueUsdStart;
 	}
 
-	public void setRangeValueUsdStart(Integer rangeValueUsdStart) {
+	public void setRangeValueUsdStart(Double rangeValueUsdStart) {
 		this.rangeValueUsdStart = rangeValueUsdStart;
 	}
 
-	public Integer getRangeValueUsdEnd() {
+	public Double getRangeValueUsdEnd() {
 		return rangeValueUsdEnd;
 	}
 
-	public void setRangeValueUsdEnd(Integer rangeValueUsdEnd) {
+	public void setRangeValueUsdEnd(Double rangeValueUsdEnd) {
 		this.rangeValueUsdEnd = rangeValueUsdEnd;
 	}
 
-	public Integer getRangeUnitPriceUsdStart() {
+	public Double getRangeUnitPriceUsdStart() {
 		return rangeUnitPriceUsdStart;
 	}
 
-	public void setRangeUnitPriceUsdStart(Integer rangeUnitPriceUsdStart) {
+	public void setRangeUnitPriceUsdStart(Double rangeUnitPriceUsdStart) {
 		this.rangeUnitPriceUsdStart = rangeUnitPriceUsdStart;
 	}
 
-	public Integer getRangeUnitPriceUsdEnd() {
+	public Double getRangeUnitPriceUsdEnd() {
 		return rangeUnitPriceUsdEnd;
 	}
 
-	public void setRangeUnitPriceUsdEnd(Integer rangeUnitPriceUsdEnd) {
+	public void setRangeUnitPriceUsdEnd(Double rangeUnitPriceUsdEnd) {
 		this.rangeUnitPriceUsdEnd = rangeUnitPriceUsdEnd;
 	}
 
