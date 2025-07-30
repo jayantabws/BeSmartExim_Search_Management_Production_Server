@@ -68,19 +68,19 @@ public class UserSearchRequest {
 	private List<String> stdUnitList;
 	
 	
-	private Double rangeQuantityStart;
+	private String rangeQuantityStart;
 	
-	private Double rangeQuantityEnd;
+	private String rangeQuantityEnd;
 	
 	private List<String> consumptionType;
 	
-	private Double rangeValueUsdStart;
+	private String rangeValueUsdStart;
 	
-	private Double rangeValueUsdEnd;
+	private String rangeValueUsdEnd;
 	
-	private Double rangeUnitPriceUsdStart;
+	private String rangeUnitPriceUsdStart;
 	
-	private Double rangeUnitPriceUsdEnd;
+	private String rangeUnitPriceUsdEnd;
 	
 	private List<String> incoterm;
 	
@@ -291,19 +291,19 @@ public class UserSearchRequest {
 		this.stdUnitList = stdUnitList;
 	}
 
-	public Double getRangeQuantityStart() {
+	public String getRangeQuantityStart() {
 		return rangeQuantityStart;
 	}
 
-	public void setRangeQuantityStart(Double rangeQuantityStart) {
+	public void setRangeQuantityStart(String rangeQuantityStart) {
 		this.rangeQuantityStart = rangeQuantityStart;
 	}
 
-	public Double getRangeQuantityEnd() {
+	public String getRangeQuantityEnd() {
 		return rangeQuantityEnd;
 	}
 
-	public void setRangeQuantityEnd(Double rangeQuantityEnd) {
+	public void setRangeQuantityEnd(String rangeQuantityEnd) {
 		this.rangeQuantityEnd = rangeQuantityEnd;
 	}
 
@@ -315,35 +315,35 @@ public class UserSearchRequest {
 		this.consumptionType = consumptionType;
 	}
 
-	public Double getRangeValueUsdStart() {
+	public String getRangeValueUsdStart() {
 		return rangeValueUsdStart;
 	}
 
-	public void setRangeValueUsdStart(Double rangeValueUsdStart) {
+	public void setRangeValueUsdStart(String rangeValueUsdStart) {
 		this.rangeValueUsdStart = rangeValueUsdStart;
 	}
 
-	public Double getRangeValueUsdEnd() {
+	public String getRangeValueUsdEnd() {
 		return rangeValueUsdEnd;
 	}
 
-	public void setRangeValueUsdEnd(Double rangeValueUsdEnd) {
+	public void setRangeValueUsdEnd(String rangeValueUsdEnd) {
 		this.rangeValueUsdEnd = rangeValueUsdEnd;
 	}
 
-	public Double getRangeUnitPriceUsdStart() {
+	public String getRangeUnitPriceUsdStart() {
 		return rangeUnitPriceUsdStart;
 	}
 
-	public void setRangeUnitPriceUsdStart(Double rangeUnitPriceUsdStart) {
+	public void setRangeUnitPriceUsdStart(String rangeUnitPriceUsdStart) {
 		this.rangeUnitPriceUsdStart = rangeUnitPriceUsdStart;
 	}
 
-	public Double getRangeUnitPriceUsdEnd() {
+	public String getRangeUnitPriceUsdEnd() {
 		return rangeUnitPriceUsdEnd;
 	}
 
-	public void setRangeUnitPriceUsdEnd(Double rangeUnitPriceUsdEnd) {
+	public void setRangeUnitPriceUsdEnd(String rangeUnitPriceUsdEnd) {
 		this.rangeUnitPriceUsdEnd = rangeUnitPriceUsdEnd;
 	}
 

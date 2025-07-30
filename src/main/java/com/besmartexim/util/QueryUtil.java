@@ -1,5 +1,6 @@
 package com.besmartexim.util;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -128,6 +129,10 @@ public class QueryUtil {
 	
 	
 	public static void main(String args[]) throws JsonMappingException, JsonProcessingException {
+		
+		Double ss =1.0E-5;
+		System.out.println(new BigDecimal(ss));
+		
 		List<String> list = new ArrayList<String>();
 		list.add("Jayanta");
 		list.add("Palash");

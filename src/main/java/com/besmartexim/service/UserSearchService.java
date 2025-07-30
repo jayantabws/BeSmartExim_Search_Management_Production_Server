@@ -195,13 +195,13 @@ public class UserSearchService {
 				callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getShipModeList()));
 				callableStatement.setString(34, queryUtil.listToString(userSearchRequest.getStdUnitList()));
 								
-				if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(35, 0); else callableStatement.setDouble(35, userSearchRequest.getRangeQuantityStart());
-				if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(36, 0); else callableStatement.setDouble(36, userSearchRequest.getRangeQuantityEnd());
+				if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(35, 0); else callableStatement.setString(35, userSearchRequest.getRangeQuantityStart());
+				if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(36, 0); else callableStatement.setString(36, userSearchRequest.getRangeQuantityEnd());
 				callableStatement.setString(37, queryUtil.listToString(userSearchRequest.getConsumptionType()));
-				if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(38, 0); else callableStatement.setDouble(38, userSearchRequest.getRangeValueUsdStart());
-				if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(39, 0); else callableStatement.setDouble(39, userSearchRequest.getRangeValueUsdEnd());
-				if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(40, 0); else callableStatement.setDouble(40, userSearchRequest.getRangeUnitPriceUsdStart());
-				if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(41, 0); else callableStatement.setDouble(41, userSearchRequest.getRangeUnitPriceUsdEnd());
+				if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(38, 0); else callableStatement.setString(38, userSearchRequest.getRangeValueUsdStart());
+				if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(39, 0); else callableStatement.setString(39, userSearchRequest.getRangeValueUsdEnd());
+				if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(40, 0); else callableStatement.setString(40, userSearchRequest.getRangeUnitPriceUsdStart());
+				if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(41, 0); else callableStatement.setString(41, userSearchRequest.getRangeUnitPriceUsdEnd());
 				callableStatement.setString(42, queryUtil.listToString(userSearchRequest.getIncoterm()));
 				callableStatement.setString(43, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 				callableStatement.setString(44, queryUtil.listToString(userSearchRequest.getProductDesc()));
@@ -277,13 +277,13 @@ public class UserSearchService {
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(34, queryUtil.listToString(userSearchRequest.getStdUnitList()));
 			
-			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(35, 0); else callableStatement.setDouble(35, userSearchRequest.getRangeQuantityStart());
-			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(36, 0); else callableStatement.setDouble(36, userSearchRequest.getRangeQuantityEnd());
+			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(35, 0); else callableStatement.setString(35, userSearchRequest.getRangeQuantityStart());
+			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(36, 0); else callableStatement.setString(36, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(37, queryUtil.listToString(userSearchRequest.getConsumptionType()));
-			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(38, 0); else callableStatement.setDouble(38, userSearchRequest.getRangeValueUsdStart());
-			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(39, 0); else callableStatement.setDouble(39, userSearchRequest.getRangeValueUsdEnd());
-			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(40, 0); else callableStatement.setDouble(40, userSearchRequest.getRangeUnitPriceUsdStart());
-			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(41, 0); else callableStatement.setDouble(41, userSearchRequest.getRangeUnitPriceUsdEnd());
+			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(38, 0); else callableStatement.setString(38, userSearchRequest.getRangeValueUsdStart());
+			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(39, 0); else callableStatement.setString(39, userSearchRequest.getRangeValueUsdEnd());
+			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(40, 0); else callableStatement.setString(40, userSearchRequest.getRangeUnitPriceUsdStart());
+			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(41, 0); else callableStatement.setString(41, userSearchRequest.getRangeUnitPriceUsdEnd());
 			callableStatement.setString(42, queryUtil.listToString(userSearchRequest.getIncoterm()));
 			callableStatement.setString(43, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(44, queryUtil.listToString(userSearchRequest.getProductDesc()));
@@ -384,13 +384,13 @@ public class UserSearchService {
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
 			
-			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(31, 0); else callableStatement.setDouble(31, userSearchRequest.getRangeQuantityStart());
-			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(32, 0); else callableStatement.setDouble(32, userSearchRequest.getRangeQuantityEnd());
+			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(31, 0); else callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
+			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(32, 0); else callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
-			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(34, 0); else callableStatement.setDouble(34, userSearchRequest.getRangeValueUsdStart());
-			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(35, 0); else callableStatement.setDouble(35, userSearchRequest.getRangeValueUsdEnd());
-			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(36, 0); else callableStatement.setDouble(36, userSearchRequest.getRangeUnitPriceUsdStart());
-			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(37, 0); else callableStatement.setDouble(37, userSearchRequest.getRangeUnitPriceUsdEnd());
+			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(34, 0); else callableStatement.setString(34, userSearchRequest.getRangeValueUsdStart());
+			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(35, 0); else callableStatement.setString(35, userSearchRequest.getRangeValueUsdEnd());
+			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(36, 0); else callableStatement.setString(36, userSearchRequest.getRangeUnitPriceUsdStart());
+			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(37, 0); else callableStatement.setString(37, userSearchRequest.getRangeUnitPriceUsdEnd());
 			callableStatement.setString(38, queryUtil.listToString(userSearchRequest.getIncoterm()));
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
@@ -530,13 +530,13 @@ public class UserSearchService {
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
 			
-			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(31, 0); else callableStatement.setDouble(31, userSearchRequest.getRangeQuantityStart());
-			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(32, 0); else callableStatement.setDouble(32, userSearchRequest.getRangeQuantityEnd());
+			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(31, 0); else callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
+			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(32, 0); else callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
-			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(34, 0); else callableStatement.setDouble(34, userSearchRequest.getRangeValueUsdStart());
-			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(35, 0); else callableStatement.setDouble(35, userSearchRequest.getRangeValueUsdEnd());
-			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(36, 0); else callableStatement.setDouble(36, userSearchRequest.getRangeUnitPriceUsdStart());
-			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(37, 0); else callableStatement.setDouble(37, userSearchRequest.getRangeUnitPriceUsdEnd());
+			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(34, 0); else callableStatement.setString(34, userSearchRequest.getRangeValueUsdStart());
+			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(35, 0); else callableStatement.setString(35, userSearchRequest.getRangeValueUsdEnd());
+			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(36, 0); else callableStatement.setString(36, userSearchRequest.getRangeUnitPriceUsdStart());
+			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(37, 0); else callableStatement.setString(37, userSearchRequest.getRangeUnitPriceUsdEnd());
 			callableStatement.setString(38, queryUtil.listToString(userSearchRequest.getIncoterm()));
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
@@ -630,13 +630,13 @@ public class UserSearchService {
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
 			
-			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(31, 0); else callableStatement.setDouble(31, userSearchRequest.getRangeQuantityStart());
-			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(32, 0); else callableStatement.setDouble(32, userSearchRequest.getRangeQuantityEnd());
+			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(31, 0); else callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
+			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(32, 0); else callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
-			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(34, 0); else callableStatement.setDouble(34, userSearchRequest.getRangeValueUsdStart());
-			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(35, 0); else callableStatement.setDouble(35, userSearchRequest.getRangeValueUsdEnd());
-			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(36, 0); else callableStatement.setDouble(36, userSearchRequest.getRangeUnitPriceUsdStart());
-			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(37, 0); else callableStatement.setDouble(37, userSearchRequest.getRangeUnitPriceUsdEnd());
+			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(34, 0); else callableStatement.setString(34, userSearchRequest.getRangeValueUsdStart());
+			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(35, 0); else callableStatement.setString(35, userSearchRequest.getRangeValueUsdEnd());
+			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(36, 0); else callableStatement.setString(36, userSearchRequest.getRangeUnitPriceUsdStart());
+			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(37, 0); else callableStatement.setString(37, userSearchRequest.getRangeUnitPriceUsdEnd());
 			callableStatement.setString(38, queryUtil.listToString(userSearchRequest.getIncoterm()));
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
@@ -728,13 +728,13 @@ public class UserSearchService {
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
 			
-			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(31, 0); else callableStatement.setDouble(31, userSearchRequest.getRangeQuantityStart());
-			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(32, 0); else callableStatement.setDouble(32, userSearchRequest.getRangeQuantityEnd());
+			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(31, 0); else callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
+			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(32, 0); else callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
-			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(34, 0); else callableStatement.setDouble(34, userSearchRequest.getRangeValueUsdStart());
-			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(35, 0); else callableStatement.setDouble(35, userSearchRequest.getRangeValueUsdEnd());
-			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(36, 0); else callableStatement.setDouble(36, userSearchRequest.getRangeUnitPriceUsdStart());
-			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(37, 0); else callableStatement.setDouble(37, userSearchRequest.getRangeUnitPriceUsdEnd());
+			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(34, 0); else callableStatement.setString(34, userSearchRequest.getRangeValueUsdStart());
+			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(35, 0); else callableStatement.setString(35, userSearchRequest.getRangeValueUsdEnd());
+			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(36, 0); else callableStatement.setString(36, userSearchRequest.getRangeUnitPriceUsdStart());
+			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(37, 0); else callableStatement.setString(37, userSearchRequest.getRangeUnitPriceUsdEnd());
 			callableStatement.setString(38, queryUtil.listToString(userSearchRequest.getIncoterm()));
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
@@ -828,13 +828,13 @@ public class UserSearchService {
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
 			
-			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(31, 0); else callableStatement.setDouble(31, userSearchRequest.getRangeQuantityStart());
-			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(32, 0); else callableStatement.setDouble(32, userSearchRequest.getRangeQuantityEnd());
+			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(31, 0); else callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
+			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(32, 0); else callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
-			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(34, 0); else callableStatement.setDouble(34, userSearchRequest.getRangeValueUsdStart());
-			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(35, 0); else callableStatement.setDouble(35, userSearchRequest.getRangeValueUsdEnd());
-			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(36, 0); else callableStatement.setDouble(36, userSearchRequest.getRangeUnitPriceUsdStart());
-			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(37, 0); else callableStatement.setDouble(37, userSearchRequest.getRangeUnitPriceUsdEnd());
+			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(34, 0); else callableStatement.setString(34, userSearchRequest.getRangeValueUsdStart());
+			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(35, 0); else callableStatement.setString(35, userSearchRequest.getRangeValueUsdEnd());
+			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(36, 0); else callableStatement.setString(36, userSearchRequest.getRangeUnitPriceUsdStart());
+			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(37, 0); else callableStatement.setString(37, userSearchRequest.getRangeUnitPriceUsdEnd());
 			callableStatement.setString(38, queryUtil.listToString(userSearchRequest.getIncoterm()));
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
@@ -927,13 +927,13 @@ public class UserSearchService {
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
 			
-			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(31, 0); else callableStatement.setDouble(31, userSearchRequest.getRangeQuantityStart());
-			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(32, 0); else callableStatement.setDouble(32, userSearchRequest.getRangeQuantityEnd());
+			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(31, 0); else callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
+			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(32, 0); else callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
-			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(34, 0); else callableStatement.setDouble(34, userSearchRequest.getRangeValueUsdStart());
-			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(35, 0); else callableStatement.setDouble(35, userSearchRequest.getRangeValueUsdEnd());
-			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(36, 0); else callableStatement.setDouble(36, userSearchRequest.getRangeUnitPriceUsdStart());
-			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(37, 0); else callableStatement.setDouble(37, userSearchRequest.getRangeUnitPriceUsdEnd());
+			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(34, 0); else callableStatement.setString(34, userSearchRequest.getRangeValueUsdStart());
+			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(35, 0); else callableStatement.setString(35, userSearchRequest.getRangeValueUsdEnd());
+			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(36, 0); else callableStatement.setString(36, userSearchRequest.getRangeUnitPriceUsdStart());
+			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(37, 0); else callableStatement.setString(37, userSearchRequest.getRangeUnitPriceUsdEnd());
 			callableStatement.setString(38, queryUtil.listToString(userSearchRequest.getIncoterm()));
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
@@ -1026,13 +1026,13 @@ public class UserSearchService {
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
 			
-			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(31, 0); else callableStatement.setDouble(31, userSearchRequest.getRangeQuantityStart());
-			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(32, 0); else callableStatement.setDouble(32, userSearchRequest.getRangeQuantityEnd());
+			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(31, 0); else callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
+			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(32, 0); else callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
-			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(34, 0); else callableStatement.setDouble(34, userSearchRequest.getRangeValueUsdStart());
-			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(35, 0); else callableStatement.setDouble(35, userSearchRequest.getRangeValueUsdEnd());
-			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(36, 0); else callableStatement.setDouble(36, userSearchRequest.getRangeUnitPriceUsdStart());
-			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(37, 0); else callableStatement.setDouble(37, userSearchRequest.getRangeUnitPriceUsdEnd());
+			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(34, 0); else callableStatement.setString(34, userSearchRequest.getRangeValueUsdStart());
+			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(35, 0); else callableStatement.setString(35, userSearchRequest.getRangeValueUsdEnd());
+			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(36, 0); else callableStatement.setString(36, userSearchRequest.getRangeUnitPriceUsdStart());
+			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(37, 0); else callableStatement.setString(37, userSearchRequest.getRangeUnitPriceUsdEnd());
 			callableStatement.setString(38, queryUtil.listToString(userSearchRequest.getIncoterm()));
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
@@ -1124,13 +1124,13 @@ public class UserSearchService {
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
 			
-			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(31, 0); else callableStatement.setDouble(31, userSearchRequest.getRangeQuantityStart());
-			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(32, 0); else callableStatement.setDouble(32, userSearchRequest.getRangeQuantityEnd());
+			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(31, 0); else callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
+			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(32, 0); else callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
-			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(34, 0); else callableStatement.setDouble(34, userSearchRequest.getRangeValueUsdStart());
-			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(35, 0); else callableStatement.setDouble(35, userSearchRequest.getRangeValueUsdEnd());
-			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(36, 0); else callableStatement.setDouble(36, userSearchRequest.getRangeUnitPriceUsdStart());
-			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(37, 0); else callableStatement.setDouble(37, userSearchRequest.getRangeUnitPriceUsdEnd());
+			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(34, 0); else callableStatement.setString(34, userSearchRequest.getRangeValueUsdStart());
+			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(35, 0); else callableStatement.setString(35, userSearchRequest.getRangeValueUsdEnd());
+			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(36, 0); else callableStatement.setString(36, userSearchRequest.getRangeUnitPriceUsdStart());
+			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(37, 0); else callableStatement.setString(37, userSearchRequest.getRangeUnitPriceUsdEnd());
 			callableStatement.setString(38, queryUtil.listToString(userSearchRequest.getIncoterm()));
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
@@ -1225,13 +1225,13 @@ public class UserSearchService {
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
 			
-			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(31, 0); else callableStatement.setDouble(31, userSearchRequest.getRangeQuantityStart());
-			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(32, 0); else callableStatement.setDouble(32, userSearchRequest.getRangeQuantityEnd());
+			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(31, 0); else callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
+			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(32, 0); else callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
-			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(34, 0); else callableStatement.setDouble(34, userSearchRequest.getRangeValueUsdStart());
-			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(35, 0); else callableStatement.setDouble(35, userSearchRequest.getRangeValueUsdEnd());
-			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(36, 0); else callableStatement.setDouble(36, userSearchRequest.getRangeUnitPriceUsdStart());
-			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(37, 0); else callableStatement.setDouble(37, userSearchRequest.getRangeUnitPriceUsdEnd());
+			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(34, 0); else callableStatement.setString(34, userSearchRequest.getRangeValueUsdStart());
+			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(35, 0); else callableStatement.setString(35, userSearchRequest.getRangeValueUsdEnd());
+			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(36, 0); else callableStatement.setString(36, userSearchRequest.getRangeUnitPriceUsdStart());
+			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(37, 0); else callableStatement.setString(37, userSearchRequest.getRangeUnitPriceUsdEnd());
 			callableStatement.setString(38, queryUtil.listToString(userSearchRequest.getIncoterm()));
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
@@ -1324,13 +1324,13 @@ public class UserSearchService {
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
 			
-			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(31, 0); else callableStatement.setDouble(31, userSearchRequest.getRangeQuantityStart());
-			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(32, 0); else callableStatement.setDouble(32, userSearchRequest.getRangeQuantityEnd());
+			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(31, 0); else callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
+			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(32, 0); else callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
-			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(34, 0); else callableStatement.setDouble(34, userSearchRequest.getRangeValueUsdStart());
-			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(35, 0); else callableStatement.setDouble(35, userSearchRequest.getRangeValueUsdEnd());
-			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(36, 0); else callableStatement.setDouble(36, userSearchRequest.getRangeUnitPriceUsdStart());
-			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(37, 0); else callableStatement.setDouble(37, userSearchRequest.getRangeUnitPriceUsdEnd());
+			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(34, 0); else callableStatement.setString(34, userSearchRequest.getRangeValueUsdStart());
+			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(35, 0); else callableStatement.setString(35, userSearchRequest.getRangeValueUsdEnd());
+			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(36, 0); else callableStatement.setString(36, userSearchRequest.getRangeUnitPriceUsdStart());
+			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(37, 0); else callableStatement.setString(37, userSearchRequest.getRangeUnitPriceUsdEnd());
 			callableStatement.setString(38, queryUtil.listToString(userSearchRequest.getIncoterm()));
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
@@ -1900,13 +1900,13 @@ public class UserSearchService {
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
 			
-			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(31, 0); else callableStatement.setDouble(31, userSearchRequest.getRangeQuantityStart());
-			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(32, 0); else callableStatement.setDouble(32, userSearchRequest.getRangeQuantityEnd());
+			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(31, 0); else callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
+			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(32, 0); else callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
-			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(34, 0); else callableStatement.setDouble(34, userSearchRequest.getRangeValueUsdStart());
-			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(35, 0); else callableStatement.setDouble(35, userSearchRequest.getRangeValueUsdEnd());
-			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(36, 0); else callableStatement.setDouble(36, userSearchRequest.getRangeUnitPriceUsdStart());
-			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(37, 0); else callableStatement.setDouble(37, userSearchRequest.getRangeUnitPriceUsdEnd());
+			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(34, 0); else callableStatement.setString(34, userSearchRequest.getRangeValueUsdStart());
+			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(35, 0); else callableStatement.setString(35, userSearchRequest.getRangeValueUsdEnd());
+			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(36, 0); else callableStatement.setString(36, userSearchRequest.getRangeUnitPriceUsdStart());
+			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(37, 0); else callableStatement.setString(37, userSearchRequest.getRangeUnitPriceUsdEnd());
 			callableStatement.setString(38, queryUtil.listToString(userSearchRequest.getIncoterm()));
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
@@ -1999,13 +1999,13 @@ public class UserSearchService {
 			
 			callableStatement.setString(31, userSearchRequest.getColumnName());
 			
-			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(32, 0); else callableStatement.setDouble(32, userSearchRequest.getRangeQuantityStart());
-			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(33, 0); else callableStatement.setDouble(33, userSearchRequest.getRangeQuantityEnd());
+			if(userSearchRequest.getRangeQuantityStart() == null) callableStatement.setInt(32, 0); else callableStatement.setString(32, userSearchRequest.getRangeQuantityStart());
+			if(userSearchRequest.getRangeQuantityEnd() == null) callableStatement.setInt(33, 0); else callableStatement.setString(33, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(34, queryUtil.listToString(userSearchRequest.getConsumptionType()));
-			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(35, 0); else callableStatement.setDouble(35, userSearchRequest.getRangeValueUsdStart());
-			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(36, 0); else callableStatement.setDouble(36, userSearchRequest.getRangeValueUsdEnd());
-			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(37, 0); else callableStatement.setDouble(37, userSearchRequest.getRangeUnitPriceUsdStart());
-			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(38, 0); else callableStatement.setDouble(38, userSearchRequest.getRangeUnitPriceUsdEnd());
+			if(userSearchRequest.getRangeValueUsdStart() == null) callableStatement.setInt(35, 0); else callableStatement.setString(35, userSearchRequest.getRangeValueUsdStart());
+			if(userSearchRequest.getRangeValueUsdEnd() == null) callableStatement.setInt(36, 0); else callableStatement.setString(36, userSearchRequest.getRangeValueUsdEnd());
+			if(userSearchRequest.getRangeUnitPriceUsdStart() == null) callableStatement.setInt(37, 0); else callableStatement.setString(37, userSearchRequest.getRangeUnitPriceUsdStart());
+			if(userSearchRequest.getRangeUnitPriceUsdEnd() == null) callableStatement.setInt(38, 0); else callableStatement.setString(38, userSearchRequest.getRangeUnitPriceUsdEnd());
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getIncoterm()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(41, queryUtil.listToString(userSearchRequest.getProductDesc()));
