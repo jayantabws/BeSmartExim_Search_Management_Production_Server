@@ -1644,7 +1644,7 @@ public class UserSearchService {
 		SearchDetails searchDetails = null;
 		List<UserSearch> userSearchList = null;
 	
-		pageable = PageRequest.of((pageable.getPageNumber()-1)*10, pageable.getPageSize(), Sort.by("searchId").descending());
+		pageable = PageRequest.of(pageable.getPageNumber()*10, pageable.getPageSize(), Sort.by("searchId").descending());
 
 		if (userId != null) {
 			if (isDownloaded != null && isDownloaded != "")
