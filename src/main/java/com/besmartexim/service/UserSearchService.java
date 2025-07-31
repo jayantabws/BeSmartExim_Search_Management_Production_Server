@@ -16,7 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -49,6 +51,7 @@ import com.besmartexim.dto.response.UserSearchResponse;
 import com.besmartexim.util.QueryConstant;
 import com.besmartexim.util.QueryUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 @Service
 public class UserSearchService {
@@ -1640,6 +1643,8 @@ public class UserSearchService {
 		List<SearchDetails> list = new ArrayList<SearchDetails>();
 		SearchDetails searchDetails = null;
 		List<UserSearch> userSearchList = null;
+	
+		pageable = PageRequest.of((pageable.getPageNumber()-1)*10, pageable.getPageSize(), Sort.by("searchId").descending());
 
 		if (userId != null) {
 			if (isDownloaded != null && isDownloaded != "")
