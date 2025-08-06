@@ -1457,10 +1457,9 @@ public class UserSearchService {
 			
 			String proeName = null;
 
-			if (queryUtil.objectToString(userSearchRequest.getCountryCode()).equalsIgnoreCase("IND"))
+			
 				proeName = QueryConstant.listStdUnitBySearchProcedure;
-			if (queryUtil.objectToString(userSearchRequest.getCountryCode()).equalsIgnoreCase("SEZ"))
-				proeName = QueryConstant.listStdUnitBySearchProcedureSEZ;
+			
 			
 			CallableStatement callableStatement = connection
 					.prepareCall(proeName);
@@ -1792,16 +1791,17 @@ public class UserSearchService {
 
 			String proeName = null;
 
-			if (suggestionRequest.getCountryCode().equalsIgnoreCase("IND"))
+			if (suggestionRequest.getCountryCode().get(0).equalsIgnoreCase("IND")) 
 				proeName = QueryConstant.listSuggestionBySearchProcedure;
-			else if (suggestionRequest.getCountryCode().equalsIgnoreCase("SEZ"))
+			else if (suggestionRequest.getCountryCode().get(0).equalsIgnoreCase("SEZ"))
 				proeName = QueryConstant.listSuggestionBySearchProcedureSEZ;
 			else
 				proeName = QueryConstant.listSuggestionBySearchForeignProcedure;
 
 			CallableStatement callableStatement = connection.prepareCall(proeName);
 			callableStatement.setString(1, suggestionRequest.getTradeType().getValue());
-			callableStatement.setString(2, suggestionRequest.getCountryCode());
+			callableStatement.setString(2, "");
+			//callableStatement.setString(2, suggestionRequest.getCountryCode());
 			callableStatement.setString(3, suggestionRequest.getFromDate());
 			callableStatement.setString(4, suggestionRequest.getToDate());
 			callableStatement.setString(5, suggestionRequest.getSearchBy().getValue());

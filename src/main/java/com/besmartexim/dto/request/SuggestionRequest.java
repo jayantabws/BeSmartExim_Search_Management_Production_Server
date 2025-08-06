@@ -11,7 +11,7 @@ public class SuggestionRequest {
 	private String fromDate;
 	private String toDate;
 	private SearchBy searchBy;
-	private String countryCode;
+	private List<String> countryCode;
 	private String searchValue;
 	private String matchType;
 	
@@ -39,10 +39,10 @@ public class SuggestionRequest {
 	public void setSearchBy(SearchBy searchBy) {
 		this.searchBy = searchBy;
 	}
-	public String getCountryCode() {
+	public List<String> getCountryCode() {
 		return countryCode;
 	}
-	public void setCountryCode(String countryCode) {
+	public void setCountryCode(List<String> countryCode) {
 		this.countryCode = countryCode;
 	}
 	public String getSearchValue() {
