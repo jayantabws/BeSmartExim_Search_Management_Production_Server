@@ -1513,7 +1513,19 @@ public class UserSearchService {
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
 			
-			callableStatement.setString(31, accessedBy.toString());
+			callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
+			callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
+			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
+			callableStatement.setString(34, userSearchRequest.getRangeValueUsdStart());
+			callableStatement.setString(35, userSearchRequest.getRangeValueUsdEnd());
+			callableStatement.setString(36, userSearchRequest.getRangeUnitPriceUsdStart());
+			callableStatement.setString(37, userSearchRequest.getRangeUnitPriceUsdEnd());
+			callableStatement.setString(38, queryUtil.listToString(userSearchRequest.getIncoterm()));
+			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
+			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
+			callableStatement.setString(41, userSearchRequest.getConditionProductDesc());
+			
+			callableStatement.setString(42, accessedBy.toString());
 
 			callableStatement.execute();
 
