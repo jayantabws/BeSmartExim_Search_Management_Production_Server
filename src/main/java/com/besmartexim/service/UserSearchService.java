@@ -1655,14 +1655,14 @@ public class UserSearchService {
 		SearchDetails searchDetails = null;
 		List<UserSearch> userSearchList = null;
 	
-		pageable = PageRequest.of(pageable.getPageNumber()*10, pageable.getPageSize(), Sort.by("searchId").descending());
+		pageable = PageRequest.of(pageable.getPageNumber()*10, pageable.getPageSize(), Sort.by("createdDate").descending());
 
 		if (userId != null) {
 			if (isDownloaded != null && isDownloaded != "")
-				userSearchList = userSearchRepository.findByCreatedByAndIsDownloadedOrderByCreatedDateDesc(userId,
+				userSearchList = userSearchRepository.findByCreatedByAndIsDownloaded(userId,
 						isDownloaded, pageable).getContent();
 			else
-				userSearchList = userSearchRepository.findByCreatedByOrderByCreatedDateDesc(userId, pageable).getContent();
+				userSearchList = userSearchRepository.findByCreatedBy(userId, pageable).getContent();
 		} else if (uplineId != null) {
 			if (isDownloaded != null && isDownloaded != "")
 				userSearchList = userSearchRepository.findByUplineIdAndIsDownloadedOrderByCreatedDateDesc(uplineId,
@@ -1671,9 +1671,9 @@ public class UserSearchService {
 				userSearchList = userSearchRepository.findByUplineIdOrderByCreatedDateDesc(uplineId, pageable.getPageNumber(), pageable.getPageSize());
 		} else {
 			if (isDownloaded != null && isDownloaded != "")
-				userSearchList = userSearchRepository.findByIsDownloadedOrderByCreatedDateDesc(isDownloaded, pageable).getContent();
+				userSearchList = userSearchRepository.findByIsDownloaded(isDownloaded, pageable).getContent();
 			else
-				userSearchList = userSearchRepository.findAllByOrderByCreatedDateDesc(pageable).getContent();
+				userSearchList = userSearchRepository.findAll(pageable).getContent();
 		}
 
 		// Fetch user management Data From User Data

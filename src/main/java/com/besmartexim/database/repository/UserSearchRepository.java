@@ -30,10 +30,10 @@ public interface UserSearchRepository extends JpaRepository<UserSearch, Long> {
 //	List<UserSearch> findAllByOrderByCreatedDateDesc();
 //	List<UserSearch> findByIsDownloadedOrderByCreatedDateDesc(String isDownloaded);
 	
-	Page<UserSearch> findByCreatedByOrderByCreatedDateDesc(Long userId, Pageable pageable);
-	Page<UserSearch> findByCreatedByAndIsDownloadedOrderByCreatedDateDesc(Long userId,String isDownloaded, Pageable pageable);
-	Page<UserSearch> findAllByOrderByCreatedDateDesc(Pageable pageable);
-	Page<UserSearch> findByIsDownloadedOrderByCreatedDateDesc(String isDownloaded, Pageable pageable);
+	Page<UserSearch> findByCreatedBy(Long userId, Pageable pageable);
+	Page<UserSearch> findByCreatedByAndIsDownloaded(Long userId,String isDownloaded, Pageable pageable);
+	Page<UserSearch> findAll(Pageable pageable);
+	Page<UserSearch> findByIsDownloaded(String isDownloaded, Pageable pageable);
 	
 	@Query(nativeQuery = true, value="SELECT * FROM user_search where created_by = :uplineId or created_by in (select id from users where upline_id = :uplineId) order by created_date desc offset :page rows fetch next :size rows only ")
 	List<UserSearch> findByUplineIdOrderByCreatedDateDesc(Long uplineId, int page, int size);
