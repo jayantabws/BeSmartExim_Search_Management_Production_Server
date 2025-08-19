@@ -52,6 +52,9 @@ public class UserSearchController {
 	public ResponseEntity<?> search(@RequestBody @Valid UserSearchRequest userSearchRequest, @RequestHeader(value="accessedBy", required=true) Long accessedBy ) throws Exception{
 		logger.info("Request : /search-management/search");
 		//mstContinentService.continentCreate(mstContinentRequest, accessedBy);
+		if("incoterm".equalsIgnoreCase(userSearchRequest.getOrderByColumn()) && "IMPORT".equalsIgnoreCase(userSearchRequest.getTradeType().getValue())) {
+			userSearchRequest.setOrderByColumn("incoterms");
+		}
 		UserSearchResponse userSearchResponse= userSearchService.search(userSearchRequest,accessedBy);
 		
 		//System.out.println(userSearchRequest);
