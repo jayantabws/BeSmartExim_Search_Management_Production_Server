@@ -169,7 +169,8 @@ public class UserSearchServiceHelper {
 					 exp.setCtry_code(rs.getString("ctry_code"));
 					 exp.setCtry_name(rs.getString("ctry_name"));
 					 
-					 exp.setStd_unit_rate_usd(Float.toString(rs.getFloat("std_unit_rate_usd")));
+					 //exp.setStd_unit_rate_usd(Float.toString(rs.getFloat("std_unit_rate_usd")));
+					 exp.setStd_unit_rate_usd(rs.getString("std_unit_rate_usd"));
 					 exp.setDraw_back(Float.toString(rs.getFloat("draw_back")));
 					 
 					 list.add(exp);
@@ -311,8 +312,8 @@ public class UserSearchServiceHelper {
 				 imp.setCtry_code(rs.getString("ctry_code"));
 				 imp.setCtry_name(rs.getString("ctry_name"));
 				 
-				 imp.setStd_unit_rate_usd(Float.toString(rs.getFloat("std_unit_rate_usd")));
-				 
+				 //imp.setStd_unit_rate_usd(Float.toString(rs.getFloat("std_unit_rate_usd")));
+				 imp.setStd_unit_rate_usd(rs.getString("std_unit_rate_usd"));
 				 list.add(imp);
 			 }
 			 userSearchResponse.setImpForeignList(list);
