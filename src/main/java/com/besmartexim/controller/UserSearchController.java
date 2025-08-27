@@ -283,6 +283,10 @@ public class UserSearchController {
 	public ResponseEntity<?> listdistinctcolumnvalue(@RequestBody  UserSearchRequest userSearchRequest, @RequestHeader(value="accessedBy", required=true) Long accessedBy ) throws Exception{
 		logger.info("Request : /search-management/listdistinctcolumnvalue");
 		
+		if("incoterm".equalsIgnoreCase(userSearchRequest.getColumnName()) && "IMPORT".equalsIgnoreCase(userSearchRequest.getTradeType().getValue())) {
+			userSearchRequest.setColumnName("incoterms");
+		}
+		
 		ListDistinctColumnValuesResponse listDistinctColumnValuesResponse = userSearchService.listdistinctcolumnvalue(userSearchRequest, accessedBy);
 		
 		//System.out.println(userSearchRequest);
