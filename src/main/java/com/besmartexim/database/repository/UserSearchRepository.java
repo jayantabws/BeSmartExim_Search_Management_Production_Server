@@ -6,11 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.stereotype.Repository;
 
 import com.besmartexim.database.entity.UserSearch;
-import com.besmartexim.dto.response.ExpInd;
 
 
 @Repository
@@ -59,6 +57,44 @@ public interface UserSearchRepository extends JpaRepository<UserSearch, Long> {
 	long countByUplineIdAndIsDownloaded(Long uplineId, String isDownloaded);
 
 	
-	
+	// new
+		@Query(nativeQuery = true, value="SELECT * FROM user_search where is_downloaded = :isDownloaded and  created_by = :userId and search_json like :searchValue order by created_date desc offset :page rows fetch next :size rows only")// Q1
+		List<UserSearch>  customByUserIdAndIsDownloadAndSearchValue(Long userId,String isDownloaded, String searchValue, int page, int size);
+		
+		@Query(nativeQuery = true, value="SELECT * FROM user_search where created_by = :userId and search_json like :searchValue order by created_date desc offset :page rows fetch next :size rows only") // Q2
+		List<UserSearch>  customByUserIdAndSearchValue(Long userId,String searchValue, int page, int size);
+		
+		@Query(nativeQuery = true, value="SELECT * FROM user_search where created_by = :uplineId or created_by in (select id from users where upline_id = :uplineId) and is_downloaded = :isDownloaded and search_json like :searchValue order by created_date desc offset :page rows fetch next :size rows only") // Q3
+		List<UserSearch> customByUplineIdAndIsDownloadAndSearchValue(Long uplineId, String isDownloaded, String searchValue, int page, int size);
+		
+		@Query(nativeQuery = true, value="SELECT * FROM user_search where created_by = :uplineId or created_by in (select id from users where upline_id = :uplineId) and search_json like :searchValue order by created_date desc offset :page rows fetch next :size rows only") // Q4
+		List<UserSearch> customByUplineIdAndSearchValue(Long uplineId, String searchValue, int page, int size);
+		
+		@Query(nativeQuery = true, value="SELECT * FROM user_search where is_downloaded = :isDownloaded and search_json like :searchValue order by created_date desc offset :page rows fetch next :size rows only") // Q5
+		List<UserSearch> customByIsDownloadedAndSearchValue(String isDownloaded, String searchValue, int page, int size);
+		
+		@Query(nativeQuery = true, value="SELECT * FROM user_search where search_json like :searchValue order by created_date desc offset :page rows fetch next :size rows only") // Q6
+		List<UserSearch> customBySearchValue(String searchValue, int page, int size);
+		
+		// count
+				@Query(nativeQuery = true, value="SELECT count(*) FROM user_search where is_downloaded = :isDownloaded and  created_by = :userId and search_json like :searchValue")// Q1
+				long  customCountByUserIdAndIsDownloadAndSearchValue(Long userId,String isDownloaded, String searchValue);
+				
+				@Query(nativeQuery = true, value="SELECT count(*) FROM user_search where created_by = :userId and search_json like :searchValue") // Q2
+				long  customCountByUserIdAndSearchValue(Long userId,String searchValue);
+				
+				@Query(nativeQuery = true, value="SELECT count(*) FROM user_search where created_by = :uplineId or created_by in (select id from users where upline_id = :uplineId) and is_downloaded = :isDownloaded and search_json like :searchValue") // Q3
+				long customCountByUplineIdAndIsDownloadAndSearchValue(Long uplineId, String isDownloaded, String searchValue);
+				
+				@Query(nativeQuery = true, value="SELECT count(*) FROM user_search where created_by = :uplineId or created_by in (select id from users where upline_id = :uplineId) and search_json like :searchValue ") // Q4
+				long customCountByUplineIdAndSearchValue(Long uplineId, String searchValue);
+				
+				@Query(nativeQuery = true, value="SELECT count(*) FROM user_search where is_downloaded = :isDownloaded and search_json like :searchValue ") // Q5
+				long customCountByIsDownloadedAndSearchValue(String isDownloaded, String searchValue);
+				
+				@Query(nativeQuery = true, value="SELECT count(*) FROM user_search where search_json like :searchValue ") // Q6
+				long customCountBySearchValue(String searchValue);
+		
+		
 	
 }

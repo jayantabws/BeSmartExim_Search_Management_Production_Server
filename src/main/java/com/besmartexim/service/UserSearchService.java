@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
-import javax.print.DocFlavor.STRING;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -2063,6 +2062,122 @@ public class UserSearchService {
 		return searchDetailsResponse;
 	}
 	
+	
+	public SearchDetailsResponse listAllQueriesNew(Long userId, Long uplineId, String isDownloaded, Long accessedBy, String searchValue, Pageable pageable)
+			throws Exception {
 
+		SearchDetailsResponse searchDetailsResponse = new SearchDetailsResponse();
+		List<SearchDetails> list = new ArrayList<SearchDetails>();
+		SearchDetails searchDetails = null;
+		List<UserSearch> userSearchList = null;
+		
+		if(searchValue != null  && searchValue != "")
+			searchValue = "%\"searchValue\"%"+searchValue+"%";
 
+		if (userId != null) {
+			if (isDownloaded != null && isDownloaded != "") {
+				userSearchList = userSearchRepository.customByUserIdAndIsDownloadAndSearchValue(userId,isDownloaded,searchValue, pageable.getPageNumber(), pageable.getPageSize()); // Q1
+			}
+			else {
+				userSearchList = userSearchRepository.customByUserIdAndSearchValue(userId,searchValue, pageable.getPageNumber(), pageable.getPageSize()); //Q2
+			}
+				
+		} else if (uplineId != null) {
+			if (isDownloaded != null && isDownloaded != "") {
+				userSearchList = userSearchRepository.customByUplineIdAndIsDownloadAndSearchValue(uplineId,isDownloaded,searchValue, pageable.getPageNumber(), pageable.getPageSize());// Q3
+			}
+			else {
+				userSearchList = userSearchRepository.customByUplineIdAndSearchValue(uplineId,searchValue, pageable.getPageNumber(), pageable.getPageSize()); //Q4
+			}
+				
+		} else {
+			if (isDownloaded != null && isDownloaded != "") {
+				userSearchList = userSearchRepository.customByIsDownloadedAndSearchValue(isDownloaded,searchValue, pageable.getPageNumber(), pageable.getPageSize());//Q5
+			}
+			else {
+				userSearchList = userSearchRepository.customBySearchValue(searchValue, pageable.getPageNumber(), pageable.getPageSize()); //Q6
+			}	
+		}
+
+		// Fetch user management Data From User Data
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.add("accessedBy", "" + accessedBy);
+		headers.add("Authorization", "Basic YXBpLWV4aW13YXRjaDp1ZTg0Q1JSZnRAWGhBMyRG");
+
+		for (Iterator iterator = userSearchList.iterator(); iterator.hasNext();) {
+			UserSearch userSearch = (UserSearch) iterator.next();
+			searchDetails = new SearchDetails();
+			searchDetails.setSearchId(userSearch.getId());
+			searchDetails.setCreatedDate(userSearch.getCreatedDate());
+			searchDetails.setTotalRecords(userSearch.getTotalRecords());
+			searchDetails.setCreatedBy(userSearch.getCreatedBy());
+			searchDetails
+					.setUserSearchQuery(objectMapper.readValue(userSearch.getSearchJson(), UserSearchRequest.class));
+			
+			
+			
+			User userEntity = userRepository.findById(userSearch.getCreatedBy()).orElse(null);
+			
+			if(userEntity != null )
+			{
+				searchDetails.setCreatedByName(userEntity.getFirstname() + " " + userEntity.getLastname());
+				searchDetails.setCreatedByEmail(userEntity.getEmail());
+			}
+
+			searchDetails.setIsDownloaded(userSearch.getIsDownloaded());
+			searchDetails.setDownloadedDate(userSearch.getDownloadedDate());
+			searchDetails.setDownloadedBy(userSearch.getDownloadedBy());
+
+			if (userSearch.getDownloadedBy() != null) {
+				
+				userEntity = userRepository.findById(userSearch.getDownloadedBy()).orElse(null);
+				
+				if(userEntity != null )
+				{
+					searchDetails.setDownloadedByName(
+							userEntity.getFirstname() + " " + userEntity.getLastname());
+					searchDetails.setDownloadedByEmail(userEntity.getEmail());
+				}
+				
+			}
+			
+			searchDetails.setRecordsDownloaded(userSearch.getRecordsDownloaded());
+
+			list.add(searchDetails);
+		}
+
+		searchDetailsResponse.setQueryList(list);
+		searchDetailsResponse = convertCountryToList(searchDetailsResponse);
+		
+		return searchDetailsResponse;
+	}
+	
+	
+	public long countAllQueriesNew(Long userId, Long uplineId, String isDownloaded, String searchValue, Long accessedBy)
+			throws Exception {
+		
+		long count = 0l;
+		if(searchValue != null  && searchValue != "")
+			searchValue = "%\"searchValue\"%"+searchValue+"%";
+
+		if (userId != null) {
+			if (isDownloaded != null && isDownloaded != "")
+				count = userSearchRepository.customCountByUserIdAndIsDownloadAndSearchValue(userId, isDownloaded, searchValue);
+			else
+				count = userSearchRepository.customCountByUserIdAndSearchValue(userId, searchValue);
+		} else if (uplineId != null) {
+			if (isDownloaded != null && isDownloaded != "")
+				count = userSearchRepository.customCountByUplineIdAndIsDownloadAndSearchValue(uplineId, isDownloaded, searchValue);
+			else
+				count = userSearchRepository.customCountByUplineIdAndSearchValue(uplineId, searchValue);
+		} else {
+			if (isDownloaded != null && isDownloaded != "")
+				count = userSearchRepository.customCountByIsDownloadedAndSearchValue(isDownloaded, searchValue);
+			else
+				count = userSearchRepository.customCountBySearchValue(searchValue);
+		}
+		
+		return count;
+	}
 }

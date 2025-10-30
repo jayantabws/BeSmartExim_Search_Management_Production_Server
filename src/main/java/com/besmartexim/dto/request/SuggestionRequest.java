@@ -2,8 +2,6 @@ package com.besmartexim.dto.request;
 
 import java.util.List;
 
-import javax.validation.constraints.NotBlank;
-
 public class SuggestionRequest {	
 	
 	
