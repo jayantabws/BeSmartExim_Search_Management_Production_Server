@@ -2076,26 +2076,44 @@ public class UserSearchService {
 
 		if (userId != null) {
 			if (isDownloaded != null && isDownloaded != "") {
-				userSearchList = userSearchRepository.customByUserIdAndIsDownloadAndSearchValue(userId,isDownloaded,searchValue, pageable.getPageNumber(), pageable.getPageSize()); // Q1
+				if(searchValue != null && searchValue != "")
+					userSearchList = userSearchRepository.customByUserIdAndIsDownloadAndSearchValue(userId,isDownloaded,searchValue, pageable.getPageNumber(), pageable.getPageSize()); // Q1
+				else
+					userSearchList = userSearchRepository.findByCreatedByAndIsDownloaded(userId,isDownloaded, pageable).getContent();
 			}
 			else {
-				userSearchList = userSearchRepository.customByUserIdAndSearchValue(userId,searchValue, pageable.getPageNumber(), pageable.getPageSize()); //Q2
+				if(searchValue != null && searchValue != "")
+					userSearchList = userSearchRepository.customByUserIdAndSearchValue(userId,searchValue, pageable.getPageNumber(), pageable.getPageSize()); //Q2
+				else
+					userSearchList = userSearchRepository.findByCreatedBy(userId, pageable).getContent();
 			}
 				
 		} else if (uplineId != null) {
 			if (isDownloaded != null && isDownloaded != "") {
-				userSearchList = userSearchRepository.customByUplineIdAndIsDownloadAndSearchValue(uplineId,isDownloaded,searchValue, pageable.getPageNumber(), pageable.getPageSize());// Q3
+				if(searchValue != null && searchValue != "")
+					userSearchList = userSearchRepository.customByUplineIdAndIsDownloadAndSearchValue(uplineId,isDownloaded,searchValue, pageable.getPageNumber(), pageable.getPageSize());// Q3
+				else
+					userSearchList = userSearchRepository.findByUplineIdAndIsDownloadedOrderByCreatedDateDesc(uplineId,isDownloaded, pageable.getPageNumber(), pageable.getPageSize());
 			}
 			else {
-				userSearchList = userSearchRepository.customByUplineIdAndSearchValue(uplineId,searchValue, pageable.getPageNumber(), pageable.getPageSize()); //Q4
+				if(searchValue != null && searchValue != "")
+					userSearchList = userSearchRepository.customByUplineIdAndSearchValue(uplineId,searchValue, pageable.getPageNumber(), pageable.getPageSize()); //Q4
+				else
+					userSearchList = userSearchRepository.findByUplineIdOrderByCreatedDateDesc(uplineId, pageable.getPageNumber(), pageable.getPageSize());
 			}
 				
 		} else {
 			if (isDownloaded != null && isDownloaded != "") {
-				userSearchList = userSearchRepository.customByIsDownloadedAndSearchValue(isDownloaded,searchValue, pageable.getPageNumber(), pageable.getPageSize());//Q5
+				if(searchValue != null && searchValue != "")
+					userSearchList = userSearchRepository.customByIsDownloadedAndSearchValue(isDownloaded,searchValue, pageable.getPageNumber(), pageable.getPageSize());//Q5
+				else
+					userSearchList = userSearchRepository.findByIsDownloaded(isDownloaded, pageable).getContent();
 			}
 			else {
-				userSearchList = userSearchRepository.customBySearchValue(searchValue, pageable.getPageNumber(), pageable.getPageSize()); //Q6
+				if(searchValue != null && searchValue != "")
+					userSearchList = userSearchRepository.customBySearchValue(searchValue, pageable.getPageNumber(), pageable.getPageSize()); //Q6
+				else
+					userSearchList = userSearchRepository.findAll(pageable).getContent();
 			}	
 		}
 
@@ -2157,27 +2175,54 @@ public class UserSearchService {
 	public long countAllQueriesNew(Long userId, Long uplineId, String isDownloaded, String searchValue, Long accessedBy)
 			throws Exception {
 		
+		
+		
 		long count = 0l;
 		if(searchValue != null  && searchValue != "")
 			searchValue = "%\"searchValue\"%"+searchValue+"%";
 
 		if (userId != null) {
-			if (isDownloaded != null && isDownloaded != "")
-				count = userSearchRepository.customCountByUserIdAndIsDownloadAndSearchValue(userId, isDownloaded, searchValue);
-			else
-				count = userSearchRepository.customCountByUserIdAndSearchValue(userId, searchValue);
+			if (isDownloaded != null && isDownloaded != "") {
+				if(searchValue != null && searchValue != "")
+					count = userSearchRepository.customCountByUserIdAndIsDownloadAndSearchValue(userId, isDownloaded, searchValue);
+				else
+					count = userSearchRepository.countByCreatedByAndIsDownloaded(userId, isDownloaded);
+			}
+			else {
+				if(searchValue != null && searchValue != "")
+					count = userSearchRepository.customCountByUserIdAndSearchValue(userId, searchValue);
+				else
+					count = userSearchRepository.countByCreatedBy(userId);
+			}
 		} else if (uplineId != null) {
-			if (isDownloaded != null && isDownloaded != "")
-				count = userSearchRepository.customCountByUplineIdAndIsDownloadAndSearchValue(uplineId, isDownloaded, searchValue);
-			else
-				count = userSearchRepository.customCountByUplineIdAndSearchValue(uplineId, searchValue);
+			if (isDownloaded != null && isDownloaded != "") {
+				if(searchValue != null && searchValue != "")
+					count = userSearchRepository.customCountByUplineIdAndIsDownloadAndSearchValue(uplineId, isDownloaded, searchValue);
+				else
+					count = userSearchRepository.countByUplineIdAndIsDownloaded(uplineId, isDownloaded);
+			}
+			else {
+				if(searchValue != null && searchValue != "")
+					count = userSearchRepository.customCountByUplineIdAndSearchValue(uplineId, searchValue);
+				else
+					count = userSearchRepository.countByUplineId(uplineId);
+			}
 		} else {
-			if (isDownloaded != null && isDownloaded != "")
-				count = userSearchRepository.customCountByIsDownloadedAndSearchValue(isDownloaded, searchValue);
-			else
-				count = userSearchRepository.customCountBySearchValue(searchValue);
+			if (isDownloaded != null && isDownloaded != "") {
+				if(searchValue != null && searchValue != "")
+					count = userSearchRepository.customCountByIsDownloadedAndSearchValue(isDownloaded, searchValue);
+				else
+					count = userSearchRepository.countByIsDownloaded(isDownloaded);
+			}
+			else {
+				if(searchValue != null && searchValue != "")
+					count = userSearchRepository.customCountBySearchValue(searchValue);
+				else
+					count = userSearchRepository.count();
+			}
 		}
 		
 		return count;
+	
 	}
 }
