@@ -306,7 +306,7 @@ public class UserSearchController {
 	}
 	
 	@RequestMapping(value = "/search/countAllnew", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity countAllQueriesNew(@RequestParam (required=false) Long userId, @RequestParam (required=false) Long uplineId,@RequestParam (required=false) String isDownloaded,@RequestParam (required=true) String searchValue, @RequestHeader(value="accessedBy", required=true) Long accessedBy) throws Exception{
+	public ResponseEntity countAllQueriesNew(@RequestParam (required=false) Long userId, @RequestParam (required=false) Long uplineId,@RequestParam (required=false) String isDownloaded,@RequestParam (required=false) String searchValue, @RequestHeader(value="accessedBy", required=true) Long accessedBy) throws Exception{
 			
 		logger.info("Request : /search-management/countAllnew");
 		long count = userSearchService.countAllQueriesNew(userId,uplineId,isDownloaded,searchValue,accessedBy);
