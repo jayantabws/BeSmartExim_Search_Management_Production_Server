@@ -51,7 +51,6 @@ import com.besmartexim.util.QueryConstant;
 import com.besmartexim.util.QueryUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
 @Service
 public class UserSearchService {
 
@@ -70,16 +69,17 @@ public class UserSearchService {
 	ObjectMapper objectMapper = new ObjectMapper();
 
 	int time_in_seconds = 300;
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(UserSearchService.class);
-	
+
 	@Autowired
-	private UserRepository  userRepository;
+	private UserRepository userRepository;
 
 	public UserSearchResponse search(UserSearchRequest userSearchRequest, Long accessedBy) throws Exception {
 		UserSearch userSearch = new UserSearch();
 
-		if (userSearchRequest.getSearchId() == null || userSearchRequest.getSearchId().equals("") || userSearchRequest.getSearchId() == 0) {
+		if (userSearchRequest.getSearchId() == null || userSearchRequest.getSearchId().equals("")
+				|| userSearchRequest.getSearchId() == 0) {
 			userSearch.setCreatedDate(new Date());
 			userSearch.setCreatedBy(accessedBy);
 			userSearch.setIsSaved("N");
@@ -112,20 +112,19 @@ public class UserSearchService {
 			connection = jdbcTemplate.getDataSource().getConnection();
 
 			String proeName = null;
-			//int isAdvance = 1;
+			// int isAdvance = 1;
 
 			if (queryUtil.objectToString(userSearchRequest.getCountryCode()).equalsIgnoreCase("IND"))
 				proeName = QueryConstant.searchProcedure;
 			else if (queryUtil.objectToString(userSearchRequest.getCountryCode()).equalsIgnoreCase("SEZ"))
 				proeName = QueryConstant.searchProcedureSEZ;
 			else
-				//proeName = QueryConstant.searchProcedurePrefix + queryUtil.objectToString(userSearchRequest.getCountryCode()).toUpperCase()
-						//+ QueryConstant.searchProcedureSuffix;
-			
-			proeName = QueryConstant.searchProcedureTmpForeignTesting;
+				// proeName = QueryConstant.searchProcedurePrefix +
+				// queryUtil.objectToString(userSearchRequest.getCountryCode()).toUpperCase()
+				// + QueryConstant.searchProcedureSuffix;
 
-			
-			
+				proeName = QueryConstant.searchProcedureTmpForeignTesting;
+
 //			if((userSearchRequest.getHsCodeList()== null || userSearchRequest.getHsCodeList().isEmpty()) && 
 //					(userSearchRequest.getHsCode4DigitList()== null || userSearchRequest.getHsCode4DigitList().isEmpty()) && 
 //					(userSearchRequest.getExporterList()== null || userSearchRequest.getExporterList().isEmpty())&& 
@@ -139,10 +138,11 @@ public class UserSearchService {
 //			{
 //				isAdvance = 0;
 //			}
-			
-			
-			if(userSearchRequest.getPageNumber() == 0 && userSearchRequest.getNumberOfRecords() < 10000 
-					&& (userSearchRequest.getSearchId() == null || userSearchRequest.getSearchId().equals("") || userSearchRequest.getSearchId() == 0) && !userSearchRequest.getSearchType().equals("ADVANCE")) {
+
+			if (userSearchRequest.getPageNumber() == 0 && userSearchRequest.getNumberOfRecords() < 10000
+					&& (userSearchRequest.getSearchId() == null || userSearchRequest.getSearchId().equals("")
+							|| userSearchRequest.getSearchId() == 0)
+					&& !userSearchRequest.getSearchType().equals("ADVANCE")) {
 				CallableStatement callableStatement = connection.prepareCall(proeName);
 				callableStatement.setString(1, userSearchRequest.getSearchType().getValue());
 				callableStatement.setString(2, userSearchRequest.getTradeType().getValue());
@@ -164,18 +164,18 @@ public class UserSearchService {
 				callableStatement.setString(18, userSearchRequest.getOrderByMode());
 				callableStatement.setInt(19, userSearchRequest.getPageNumber());
 				callableStatement.setInt(20, userSearchRequest.getNumberOfRecords());
-				
+
 				int MAX_SIZE = 3;
 				int incSize = userSearchRequest.getQueryBuilder().size();
 				List<QueryBuilder> qbList = userSearchRequest.getQueryBuilder();
-				
+
 				for (int i = incSize; i < MAX_SIZE; i++) {
 					QueryBuilder qb = new QueryBuilder();
 					qb.setMatchType(null);
 					qb.setRelation(null);
 					qb.setSearchBy(null);
 					qb.setSearchValue(null);
-					if(qbList!=null) {
+					if (qbList != null) {
 						qbList.add(qb);
 					}
 				}
@@ -188,15 +188,15 @@ public class UserSearchService {
 				callableStatement.setString(26, qbList.get(1).getMatchType());
 				callableStatement.setString(27, qbList.get(1).getSearchBy());
 				callableStatement.setString(28, queryUtil.listToString(qbList.get(1).getSearchValue()));
-				
+
 				callableStatement.setString(29, qbList.get(2).getRelation());
 				callableStatement.setString(30, qbList.get(2).getMatchType());
 				callableStatement.setString(31, qbList.get(2).getSearchBy());
 				callableStatement.setString(32, queryUtil.listToString(qbList.get(2).getSearchValue()));
-				
+
 				callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getShipModeList()));
 				callableStatement.setString(34, queryUtil.listToString(userSearchRequest.getStdUnitList()));
-								
+
 				callableStatement.setString(35, userSearchRequest.getRangeQuantityStart());
 				callableStatement.setString(36, userSearchRequest.getRangeQuantityEnd());
 				callableStatement.setString(37, queryUtil.listToString(userSearchRequest.getConsumptionType()));
@@ -207,24 +207,22 @@ public class UserSearchService {
 				callableStatement.setString(42, queryUtil.listToString(userSearchRequest.getIncoterm()));
 				callableStatement.setString(43, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 				callableStatement.setString(44, queryUtil.listToString(userSearchRequest.getProductDesc()));
-				callableStatement.setString(45, userSearchRequest.getConditionProductDesc());	
-				
-				
+				callableStatement.setString(45, userSearchRequest.getConditionProductDesc());
+
 				callableStatement.setString(46, accessedBy.toString());
-				
+
 				callableStatement.setQueryTimeout(time_in_seconds);
-				
+
 				boolean b = callableStatement.execute();
 			}
 			CallableStatement callableStatement;
-			if (queryUtil.objectToString(userSearchRequest.getCountryCode()).equalsIgnoreCase("IND") || queryUtil.objectToString(userSearchRequest.getCountryCode()).equalsIgnoreCase("SEZ"))
-			{			
+			if (queryUtil.objectToString(userSearchRequest.getCountryCode()).equalsIgnoreCase("IND")
+					|| queryUtil.objectToString(userSearchRequest.getCountryCode()).equalsIgnoreCase("SEZ")) {
 				callableStatement = connection.prepareCall(QueryConstant.searchProcedureTmp);
-			}
-			else
-			{
+			} else {
 				callableStatement = connection.prepareCall(QueryConstant.searchProcedureTmpForeign);
-				//callableStatement = connection.prepareCall(QueryConstant.searchProcedureTmpForeignTesting);
+				// callableStatement =
+				// connection.prepareCall(QueryConstant.searchProcedureTmpForeignTesting);
 			}
 			callableStatement.setString(1, userSearchRequest.getSearchType().getValue());
 			callableStatement.setString(2, userSearchRequest.getTradeType().getValue());
@@ -246,18 +244,18 @@ public class UserSearchService {
 			callableStatement.setString(18, userSearchRequest.getOrderByMode());
 			callableStatement.setInt(19, userSearchRequest.getPageNumber());
 			callableStatement.setInt(20, userSearchRequest.getNumberOfRecords());
-			
+
 			int MAX_SIZE = 3;
 			int incSize = userSearchRequest.getQueryBuilder().size();
 			List<QueryBuilder> qbList = userSearchRequest.getQueryBuilder();
-			
+
 			for (int i = incSize; i < MAX_SIZE; i++) {
 				QueryBuilder qb = new QueryBuilder();
 				qb.setMatchType(null);
 				qb.setRelation(null);
 				qb.setSearchBy(null);
 				qb.setSearchValue(null);
-				if(qbList!=null) {
+				if (qbList != null) {
 					qbList.add(qb);
 				}
 			}
@@ -270,15 +268,15 @@ public class UserSearchService {
 			callableStatement.setString(26, qbList.get(1).getMatchType());
 			callableStatement.setString(27, qbList.get(1).getSearchBy());
 			callableStatement.setString(28, queryUtil.listToString(qbList.get(1).getSearchValue()));
-			
+
 			callableStatement.setString(29, qbList.get(2).getRelation());
 			callableStatement.setString(30, qbList.get(2).getMatchType());
 			callableStatement.setString(31, qbList.get(2).getSearchBy());
 			callableStatement.setString(32, queryUtil.listToString(qbList.get(2).getSearchValue()));
-			
+
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(34, queryUtil.listToString(userSearchRequest.getStdUnitList()));
-			
+
 			callableStatement.setString(35, userSearchRequest.getRangeQuantityStart());
 			callableStatement.setString(36, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(37, queryUtil.listToString(userSearchRequest.getConsumptionType()));
@@ -290,11 +288,11 @@ public class UserSearchService {
 			callableStatement.setString(43, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(44, queryUtil.listToString(userSearchRequest.getProductDesc()));
 			callableStatement.setString(45, userSearchRequest.getConditionProductDesc());
-			
+
 			callableStatement.setString(46, accessedBy.toString());
-			
+
 			callableStatement.setQueryTimeout(time_in_seconds);
-			//callableStatement.sett
+			// callableStatement.sett
 			boolean b = callableStatement.execute();
 
 			rs = callableStatement.getResultSet();
@@ -329,9 +327,10 @@ public class UserSearchService {
 			else if (queryUtil.objectToString(userSearchRequest.getCountryCode()).equalsIgnoreCase("SEZ"))
 				proeName = QueryConstant.searchCountProcedureSEZ;
 			else
-				proeName = QueryConstant.searchCountProcedurePrefix + queryUtil.objectToString(userSearchRequest.getCountryCode()).toUpperCase()
+				proeName = QueryConstant.searchCountProcedurePrefix
+						+ queryUtil.objectToString(userSearchRequest.getCountryCode()).toUpperCase()
 						+ QueryConstant.searchCountProcedureSuffix;
-			
+
 			proeName = QueryConstant.searchCountProcedureAllCountries;
 
 			CallableStatement callableStatement = connection.prepareCall(proeName);
@@ -351,20 +350,18 @@ public class UserSearchService {
 			callableStatement.setString(14, queryUtil.listToString(userSearchRequest.getCityDestinationList()));
 			callableStatement.setString(15, queryUtil.listToString(userSearchRequest.getPortOriginList()));
 			callableStatement.setString(16, queryUtil.listToString(userSearchRequest.getPortDestinationList()));
-			
-			
-			
+
 			int MAX_SIZE = 3;
 			int incSize = userSearchRequest.getQueryBuilder().size();
 			List<QueryBuilder> qbList = userSearchRequest.getQueryBuilder();
-			
+
 			for (int i = incSize; i < MAX_SIZE; i++) {
 				QueryBuilder qb = new QueryBuilder();
 				qb.setMatchType(null);
 				qb.setRelation(null);
 				qb.setSearchBy(null);
 				qb.setSearchValue(null);
-				if(qbList!=null) {
+				if (qbList != null) {
 					qbList.add(qb);
 				}
 			}
@@ -377,15 +374,15 @@ public class UserSearchService {
 			callableStatement.setString(22, qbList.get(1).getMatchType());
 			callableStatement.setString(23, qbList.get(1).getSearchBy());
 			callableStatement.setString(24, queryUtil.listToString(qbList.get(1).getSearchValue()));
-			
+
 			callableStatement.setString(25, qbList.get(2).getRelation());
 			callableStatement.setString(26, qbList.get(2).getMatchType());
 			callableStatement.setString(27, qbList.get(2).getSearchBy());
 			callableStatement.setString(28, queryUtil.listToString(qbList.get(2).getSearchValue()));
-			
+
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
-			
+
 			callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
 			callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
@@ -397,7 +394,7 @@ public class UserSearchService {
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
 			callableStatement.setString(41, userSearchRequest.getConditionProductDesc());
-			
+
 			callableStatement.setString(42, accessedBy.toString());
 
 			callableStatement.execute();
@@ -497,20 +494,18 @@ public class UserSearchService {
 			callableStatement.setString(14, queryUtil.listToString(userSearchRequest.getCityDestinationList()));
 			callableStatement.setString(15, queryUtil.listToString(userSearchRequest.getPortOriginList()));
 			callableStatement.setString(16, queryUtil.listToString(userSearchRequest.getPortDestinationList()));
-			
-			
-			
+
 			int MAX_SIZE = 3;
 			int incSize = userSearchRequest.getQueryBuilder().size();
 			List<QueryBuilder> qbList = userSearchRequest.getQueryBuilder();
-			
+
 			for (int i = incSize; i < MAX_SIZE; i++) {
 				QueryBuilder qb = new QueryBuilder();
 				qb.setMatchType(null);
 				qb.setRelation(null);
 				qb.setSearchBy(null);
 				qb.setSearchValue(null);
-				if(qbList!=null) {
+				if (qbList != null) {
 					qbList.add(qb);
 				}
 			}
@@ -523,15 +518,15 @@ public class UserSearchService {
 			callableStatement.setString(22, qbList.get(1).getMatchType());
 			callableStatement.setString(23, qbList.get(1).getSearchBy());
 			callableStatement.setString(24, queryUtil.listToString(qbList.get(1).getSearchValue()));
-			
+
 			callableStatement.setString(25, qbList.get(2).getRelation());
 			callableStatement.setString(26, qbList.get(2).getMatchType());
 			callableStatement.setString(27, qbList.get(2).getSearchBy());
 			callableStatement.setString(28, queryUtil.listToString(qbList.get(2).getSearchValue()));
-			
+
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
-			
+
 			callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
 			callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
@@ -543,9 +538,8 @@ public class UserSearchService {
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
 			callableStatement.setString(41, userSearchRequest.getConditionProductDesc());
-			
+
 			callableStatement.setString(42, accessedBy.toString());
-			
 
 			callableStatement.execute();
 
@@ -597,20 +591,18 @@ public class UserSearchService {
 			callableStatement.setString(14, queryUtil.listToString(userSearchRequest.getCityDestinationList()));
 			callableStatement.setString(15, queryUtil.listToString(userSearchRequest.getPortOriginList()));
 			callableStatement.setString(16, queryUtil.listToString(userSearchRequest.getPortDestinationList()));
-			
-			
-			
+
 			int MAX_SIZE = 3;
 			int incSize = userSearchRequest.getQueryBuilder().size();
 			List<QueryBuilder> qbList = userSearchRequest.getQueryBuilder();
-			
+
 			for (int i = incSize; i < MAX_SIZE; i++) {
 				QueryBuilder qb = new QueryBuilder();
 				qb.setMatchType(null);
 				qb.setRelation(null);
 				qb.setSearchBy(null);
 				qb.setSearchValue(null);
-				if(qbList!=null) {
+				if (qbList != null) {
 					qbList.add(qb);
 				}
 			}
@@ -623,15 +615,15 @@ public class UserSearchService {
 			callableStatement.setString(22, qbList.get(1).getMatchType());
 			callableStatement.setString(23, qbList.get(1).getSearchBy());
 			callableStatement.setString(24, queryUtil.listToString(qbList.get(1).getSearchValue()));
-			
+
 			callableStatement.setString(25, qbList.get(2).getRelation());
 			callableStatement.setString(26, qbList.get(2).getMatchType());
 			callableStatement.setString(27, qbList.get(2).getSearchBy());
 			callableStatement.setString(28, queryUtil.listToString(qbList.get(2).getSearchValue()));
-			
+
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
-			
+
 			callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
 			callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
@@ -643,9 +635,9 @@ public class UserSearchService {
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
 			callableStatement.setString(41, userSearchRequest.getConditionProductDesc());
-			
+
 			callableStatement.setString(42, accessedBy.toString());
-			
+
 			callableStatement.execute();
 
 			rs = callableStatement.getResultSet();
@@ -663,7 +655,8 @@ public class UserSearchService {
 		return listExportersResponse;
 	}
 
-	public ListCountriesResponse listforeigncountries(UserSearchRequest userSearchRequest, Long accessedBy) throws Exception {
+	public ListCountriesResponse listforeigncountries(UserSearchRequest userSearchRequest, Long accessedBy)
+			throws Exception {
 		Connection connection = null;
 		ResultSet rs = null;
 		ListCountriesResponse listCountriesResponse = null;
@@ -696,19 +689,18 @@ public class UserSearchService {
 			callableStatement.setString(14, queryUtil.listToString(userSearchRequest.getCityDestinationList()));
 			callableStatement.setString(15, queryUtil.listToString(userSearchRequest.getPortOriginList()));
 			callableStatement.setString(16, queryUtil.listToString(userSearchRequest.getPortDestinationList()));
-			
-			
+
 			int MAX_SIZE = 3;
 			int incSize = userSearchRequest.getQueryBuilder().size();
 			List<QueryBuilder> qbList = userSearchRequest.getQueryBuilder();
-			
+
 			for (int i = incSize; i < MAX_SIZE; i++) {
 				QueryBuilder qb = new QueryBuilder();
 				qb.setMatchType(null);
 				qb.setRelation(null);
 				qb.setSearchBy(null);
 				qb.setSearchValue(null);
-				if(qbList!=null) {
+				if (qbList != null) {
 					qbList.add(qb);
 				}
 			}
@@ -721,15 +713,15 @@ public class UserSearchService {
 			callableStatement.setString(22, qbList.get(1).getMatchType());
 			callableStatement.setString(23, qbList.get(1).getSearchBy());
 			callableStatement.setString(24, queryUtil.listToString(qbList.get(1).getSearchValue()));
-			
+
 			callableStatement.setString(25, qbList.get(2).getRelation());
 			callableStatement.setString(26, qbList.get(2).getMatchType());
 			callableStatement.setString(27, qbList.get(2).getSearchBy());
 			callableStatement.setString(28, queryUtil.listToString(qbList.get(2).getSearchValue()));
-			
+
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
-			
+
 			callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
 			callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
@@ -741,9 +733,8 @@ public class UserSearchService {
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
 			callableStatement.setString(41, userSearchRequest.getConditionProductDesc());
-			
+
 			callableStatement.setString(42, accessedBy.toString());
-			
 
 			callableStatement.execute();
 
@@ -796,19 +787,18 @@ public class UserSearchService {
 			callableStatement.setString(14, queryUtil.listToString(userSearchRequest.getCityDestinationList()));
 			callableStatement.setString(15, queryUtil.listToString(userSearchRequest.getPortOriginList()));
 			callableStatement.setString(16, queryUtil.listToString(userSearchRequest.getPortDestinationList()));
-			
-			
+
 			int MAX_SIZE = 3;
 			int incSize = userSearchRequest.getQueryBuilder().size();
 			List<QueryBuilder> qbList = userSearchRequest.getQueryBuilder();
-			
+
 			for (int i = incSize; i < MAX_SIZE; i++) {
 				QueryBuilder qb = new QueryBuilder();
 				qb.setMatchType(null);
 				qb.setRelation(null);
 				qb.setSearchBy(null);
 				qb.setSearchValue(null);
-				if(qbList!=null) {
+				if (qbList != null) {
 					qbList.add(qb);
 				}
 			}
@@ -821,15 +811,15 @@ public class UserSearchService {
 			callableStatement.setString(22, qbList.get(1).getMatchType());
 			callableStatement.setString(23, qbList.get(1).getSearchBy());
 			callableStatement.setString(24, queryUtil.listToString(qbList.get(1).getSearchValue()));
-			
+
 			callableStatement.setString(25, qbList.get(2).getRelation());
 			callableStatement.setString(26, qbList.get(2).getMatchType());
 			callableStatement.setString(27, qbList.get(2).getSearchBy());
 			callableStatement.setString(28, queryUtil.listToString(qbList.get(2).getSearchValue()));
-			
+
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
-			
+
 			callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
 			callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
@@ -841,7 +831,7 @@ public class UserSearchService {
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
 			callableStatement.setString(41, userSearchRequest.getConditionProductDesc());
-			
+
 			callableStatement.setString(42, accessedBy.toString());
 
 			callableStatement.execute();
@@ -895,19 +885,18 @@ public class UserSearchService {
 			callableStatement.setString(14, queryUtil.listToString(userSearchRequest.getCityDestinationList()));
 			callableStatement.setString(15, queryUtil.listToString(userSearchRequest.getPortOriginList()));
 			callableStatement.setString(16, queryUtil.listToString(userSearchRequest.getPortDestinationList()));
-			
-			
+
 			int MAX_SIZE = 3;
 			int incSize = userSearchRequest.getQueryBuilder().size();
 			List<QueryBuilder> qbList = userSearchRequest.getQueryBuilder();
-			
+
 			for (int i = incSize; i < MAX_SIZE; i++) {
 				QueryBuilder qb = new QueryBuilder();
 				qb.setMatchType(null);
 				qb.setRelation(null);
 				qb.setSearchBy(null);
 				qb.setSearchValue(null);
-				if(qbList!=null) {
+				if (qbList != null) {
 					qbList.add(qb);
 				}
 			}
@@ -920,15 +909,15 @@ public class UserSearchService {
 			callableStatement.setString(22, qbList.get(1).getMatchType());
 			callableStatement.setString(23, qbList.get(1).getSearchBy());
 			callableStatement.setString(24, queryUtil.listToString(qbList.get(1).getSearchValue()));
-			
+
 			callableStatement.setString(25, qbList.get(2).getRelation());
 			callableStatement.setString(26, qbList.get(2).getMatchType());
 			callableStatement.setString(27, qbList.get(2).getSearchBy());
 			callableStatement.setString(28, queryUtil.listToString(qbList.get(2).getSearchValue()));
-			
+
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
-			
+
 			callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
 			callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
@@ -940,9 +929,8 @@ public class UserSearchService {
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
 			callableStatement.setString(41, userSearchRequest.getConditionProductDesc());
-			
+
 			callableStatement.setString(42, accessedBy.toString());
-			
 
 			callableStatement.execute();
 
@@ -994,19 +982,18 @@ public class UserSearchService {
 			callableStatement.setString(14, queryUtil.listToString(userSearchRequest.getCityDestinationList()));
 			callableStatement.setString(15, queryUtil.listToString(userSearchRequest.getPortOriginList()));
 			callableStatement.setString(16, queryUtil.listToString(userSearchRequest.getPortDestinationList()));
-			
-			
+
 			int MAX_SIZE = 3;
 			int incSize = userSearchRequest.getQueryBuilder().size();
 			List<QueryBuilder> qbList = userSearchRequest.getQueryBuilder();
-			
+
 			for (int i = incSize; i < MAX_SIZE; i++) {
 				QueryBuilder qb = new QueryBuilder();
 				qb.setMatchType(null);
 				qb.setRelation(null);
 				qb.setSearchBy(null);
 				qb.setSearchValue(null);
-				if(qbList!=null) {
+				if (qbList != null) {
 					qbList.add(qb);
 				}
 			}
@@ -1019,15 +1006,15 @@ public class UserSearchService {
 			callableStatement.setString(22, qbList.get(1).getMatchType());
 			callableStatement.setString(23, qbList.get(1).getSearchBy());
 			callableStatement.setString(24, queryUtil.listToString(qbList.get(1).getSearchValue()));
-			
+
 			callableStatement.setString(25, qbList.get(2).getRelation());
 			callableStatement.setString(26, qbList.get(2).getMatchType());
 			callableStatement.setString(27, qbList.get(2).getSearchBy());
 			callableStatement.setString(28, queryUtil.listToString(qbList.get(2).getSearchValue()));
-			
+
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
-			
+
 			callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
 			callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
@@ -1039,8 +1026,8 @@ public class UserSearchService {
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
 			callableStatement.setString(41, userSearchRequest.getConditionProductDesc());
-			
-			callableStatement.setString(42, accessedBy.toString());			
+
+			callableStatement.setString(42, accessedBy.toString());
 
 			callableStatement.execute();
 
@@ -1092,19 +1079,18 @@ public class UserSearchService {
 			callableStatement.setString(14, queryUtil.listToString(userSearchRequest.getCityDestinationList()));
 			callableStatement.setString(15, queryUtil.listToString(userSearchRequest.getPortOriginList()));
 			callableStatement.setString(16, queryUtil.listToString(userSearchRequest.getPortDestinationList()));
-			
-			
+
 			int MAX_SIZE = 3;
 			int incSize = userSearchRequest.getQueryBuilder().size();
 			List<QueryBuilder> qbList = userSearchRequest.getQueryBuilder();
-			
+
 			for (int i = incSize; i < MAX_SIZE; i++) {
 				QueryBuilder qb = new QueryBuilder();
 				qb.setMatchType(null);
 				qb.setRelation(null);
 				qb.setSearchBy(null);
 				qb.setSearchValue(null);
-				if(qbList!=null) {
+				if (qbList != null) {
 					qbList.add(qb);
 				}
 			}
@@ -1117,15 +1103,15 @@ public class UserSearchService {
 			callableStatement.setString(22, qbList.get(1).getMatchType());
 			callableStatement.setString(23, qbList.get(1).getSearchBy());
 			callableStatement.setString(24, queryUtil.listToString(qbList.get(1).getSearchValue()));
-			
+
 			callableStatement.setString(25, qbList.get(2).getRelation());
 			callableStatement.setString(26, qbList.get(2).getMatchType());
 			callableStatement.setString(27, qbList.get(2).getSearchBy());
 			callableStatement.setString(28, queryUtil.listToString(qbList.get(2).getSearchValue()));
-			
+
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
-			
+
 			callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
 			callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
@@ -1137,8 +1123,8 @@ public class UserSearchService {
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
 			callableStatement.setString(41, userSearchRequest.getConditionProductDesc());
-			
-			callableStatement.setString(42, accessedBy.toString());			
+
+			callableStatement.setString(42, accessedBy.toString());
 
 			callableStatement.execute();
 
@@ -1157,7 +1143,7 @@ public class UserSearchService {
 		return listHscodesResponse;
 
 	}
-	
+
 	public ListMonthwiseResponse listmonthwise(UserSearchRequest userSearchRequest, Long accessedBy) throws Exception {
 		Connection connection = null;
 		ResultSet rs = null;
@@ -1173,7 +1159,7 @@ public class UserSearchService {
 //				proeName = QueryConstant.listMonthwiseBySearchProcedureSEZ;
 //			else
 //				proeName = QueryConstant.listMonthwiseBySearchProcedure;
-			
+
 			proeName = QueryConstant.listMonthwiseBySearchProcedureAllCountries;
 
 			CallableStatement callableStatement = connection.prepareCall(proeName);
@@ -1193,19 +1179,18 @@ public class UserSearchService {
 			callableStatement.setString(14, queryUtil.listToString(userSearchRequest.getCityDestinationList()));
 			callableStatement.setString(15, queryUtil.listToString(userSearchRequest.getPortOriginList()));
 			callableStatement.setString(16, queryUtil.listToString(userSearchRequest.getPortDestinationList()));
-			
-			
+
 			int MAX_SIZE = 3;
 			int incSize = userSearchRequest.getQueryBuilder().size();
 			List<QueryBuilder> qbList = userSearchRequest.getQueryBuilder();
-			
+
 			for (int i = incSize; i < MAX_SIZE; i++) {
 				QueryBuilder qb = new QueryBuilder();
 				qb.setMatchType(null);
 				qb.setRelation(null);
 				qb.setSearchBy(null);
 				qb.setSearchValue(null);
-				if(qbList!=null) {
+				if (qbList != null) {
 					qbList.add(qb);
 				}
 			}
@@ -1218,15 +1203,15 @@ public class UserSearchService {
 			callableStatement.setString(22, qbList.get(1).getMatchType());
 			callableStatement.setString(23, qbList.get(1).getSearchBy());
 			callableStatement.setString(24, queryUtil.listToString(qbList.get(1).getSearchValue()));
-			
+
 			callableStatement.setString(25, qbList.get(2).getRelation());
 			callableStatement.setString(26, qbList.get(2).getMatchType());
 			callableStatement.setString(27, qbList.get(2).getSearchBy());
 			callableStatement.setString(28, queryUtil.listToString(qbList.get(2).getSearchValue()));
-			
+
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
-			
+
 			callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
 			callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
@@ -1238,8 +1223,8 @@ public class UserSearchService {
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
 			callableStatement.setString(41, userSearchRequest.getConditionProductDesc());
-			
-			callableStatement.setString(42, accessedBy.toString());	
+
+			callableStatement.setString(42, accessedBy.toString());
 
 			callableStatement.execute();
 
@@ -1259,7 +1244,8 @@ public class UserSearchService {
 
 	}
 
-	public ListHscodesResponse listhscodes4digit(UserSearchRequest userSearchRequest, Long accessedBy) throws Exception {
+	public ListHscodesResponse listhscodes4digit(UserSearchRequest userSearchRequest, Long accessedBy)
+			throws Exception {
 		Connection connection = null;
 		ResultSet rs = null;
 		ListHscodesResponse listHscodesResponse = null;
@@ -1292,19 +1278,18 @@ public class UserSearchService {
 			callableStatement.setString(14, queryUtil.listToString(userSearchRequest.getCityDestinationList()));
 			callableStatement.setString(15, queryUtil.listToString(userSearchRequest.getPortOriginList()));
 			callableStatement.setString(16, queryUtil.listToString(userSearchRequest.getPortDestinationList()));
-			
-			
+
 			int MAX_SIZE = 3;
 			int incSize = userSearchRequest.getQueryBuilder().size();
 			List<QueryBuilder> qbList = userSearchRequest.getQueryBuilder();
-			
+
 			for (int i = incSize; i < MAX_SIZE; i++) {
 				QueryBuilder qb = new QueryBuilder();
 				qb.setMatchType(null);
 				qb.setRelation(null);
 				qb.setSearchBy(null);
 				qb.setSearchValue(null);
-				if(qbList!=null) {
+				if (qbList != null) {
 					qbList.add(qb);
 				}
 			}
@@ -1317,15 +1302,15 @@ public class UserSearchService {
 			callableStatement.setString(22, qbList.get(1).getMatchType());
 			callableStatement.setString(23, qbList.get(1).getSearchBy());
 			callableStatement.setString(24, queryUtil.listToString(qbList.get(1).getSearchValue()));
-			
+
 			callableStatement.setString(25, qbList.get(2).getRelation());
 			callableStatement.setString(26, qbList.get(2).getMatchType());
 			callableStatement.setString(27, qbList.get(2).getSearchBy());
 			callableStatement.setString(28, queryUtil.listToString(qbList.get(2).getSearchValue()));
-			
+
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
-			
+
 			callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
 			callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
@@ -1337,7 +1322,7 @@ public class UserSearchService {
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
 			callableStatement.setString(41, userSearchRequest.getConditionProductDesc());
-			
+
 			callableStatement.setString(42, accessedBy.toString());
 
 			callableStatement.execute();
@@ -1358,23 +1343,22 @@ public class UserSearchService {
 
 	}
 
-	public ListShipmentModeResponse listshipmentmode(UserSearchRequest userSearchRequest, Long accessedBy) throws Exception {
+	public ListShipmentModeResponse listshipmentmode(UserSearchRequest userSearchRequest, Long accessedBy)
+			throws Exception {
 		Connection connection = null;
 		ResultSet rs = null;
 		ListShipmentModeResponse listShipmentModeResponse = null;
 		try {
 			connection = jdbcTemplate.getDataSource().getConnection();
-			
+
 			String proeName = null;
 
 			if (queryUtil.objectToString(userSearchRequest.getCountryCode()).equalsIgnoreCase("IND"))
 				proeName = QueryConstant.listShipmentModeBySearchProcedure;
 			if (queryUtil.objectToString(userSearchRequest.getCountryCode()).equalsIgnoreCase("SEZ"))
 				proeName = QueryConstant.listShipmentModeBySearchProcedureSEZ;
-			
-			
-			CallableStatement callableStatement = connection
-					.prepareCall(proeName);
+
+			CallableStatement callableStatement = connection.prepareCall(proeName);
 			callableStatement.setString(1, userSearchRequest.getSearchType().getValue());
 			callableStatement.setString(2, userSearchRequest.getTradeType().getValue());
 			callableStatement.setString(3, userSearchRequest.getFromDate());
@@ -1391,19 +1375,18 @@ public class UserSearchService {
 			callableStatement.setString(14, queryUtil.listToString(userSearchRequest.getCityDestinationList()));
 			callableStatement.setString(15, queryUtil.listToString(userSearchRequest.getPortOriginList()));
 			callableStatement.setString(16, queryUtil.listToString(userSearchRequest.getPortDestinationList()));
-			
-			
+
 			int MAX_SIZE = 3;
 			int incSize = userSearchRequest.getQueryBuilder().size();
 			List<QueryBuilder> qbList = userSearchRequest.getQueryBuilder();
-			
+
 			for (int i = incSize; i < MAX_SIZE; i++) {
 				QueryBuilder qb = new QueryBuilder();
 				qb.setMatchType(null);
 				qb.setRelation(null);
 				qb.setSearchBy(null);
 				qb.setSearchValue(null);
-				if(qbList!=null) {
+				if (qbList != null) {
 					qbList.add(qb);
 				}
 			}
@@ -1416,17 +1399,16 @@ public class UserSearchService {
 			callableStatement.setString(22, qbList.get(1).getMatchType());
 			callableStatement.setString(23, qbList.get(1).getSearchBy());
 			callableStatement.setString(24, queryUtil.listToString(qbList.get(1).getSearchValue()));
-			
+
 			callableStatement.setString(25, qbList.get(2).getRelation());
 			callableStatement.setString(26, qbList.get(2).getMatchType());
 			callableStatement.setString(27, qbList.get(2).getSearchBy());
 			callableStatement.setString(28, queryUtil.listToString(qbList.get(2).getSearchValue()));
-			
+
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
-			
+
 			callableStatement.setString(31, accessedBy.toString());
-			
 
 			callableStatement.execute();
 
@@ -1445,23 +1427,19 @@ public class UserSearchService {
 		return listShipmentModeResponse;
 
 	}
-	
-	
+
 	public ListStdUnitResponse liststdunit(UserSearchRequest userSearchRequest, Long accessedBy) throws Exception {
 		Connection connection = null;
 		ResultSet rs = null;
 		ListStdUnitResponse listStdUnitResponse = null;
 		try {
 			connection = jdbcTemplate.getDataSource().getConnection();
-			
+
 			String proeName = null;
 
-			
-				proeName = QueryConstant.listStdUnitBySearchProcedure;
-			
-			
-			CallableStatement callableStatement = connection
-					.prepareCall(proeName);
+			proeName = QueryConstant.listStdUnitBySearchProcedure;
+
+			CallableStatement callableStatement = connection.prepareCall(proeName);
 			callableStatement.setString(1, userSearchRequest.getSearchType().getValue());
 			callableStatement.setString(2, userSearchRequest.getTradeType().getValue());
 			callableStatement.setString(3, userSearchRequest.getFromDate());
@@ -1478,19 +1456,18 @@ public class UserSearchService {
 			callableStatement.setString(14, queryUtil.listToString(userSearchRequest.getCityDestinationList()));
 			callableStatement.setString(15, queryUtil.listToString(userSearchRequest.getPortOriginList()));
 			callableStatement.setString(16, queryUtil.listToString(userSearchRequest.getPortDestinationList()));
-			
-			
+
 			int MAX_SIZE = 3;
 			int incSize = userSearchRequest.getQueryBuilder().size();
 			List<QueryBuilder> qbList = userSearchRequest.getQueryBuilder();
-			
+
 			for (int i = incSize; i < MAX_SIZE; i++) {
 				QueryBuilder qb = new QueryBuilder();
 				qb.setMatchType(null);
 				qb.setRelation(null);
 				qb.setSearchBy(null);
 				qb.setSearchValue(null);
-				if(qbList!=null) {
+				if (qbList != null) {
 					qbList.add(qb);
 				}
 			}
@@ -1503,15 +1480,15 @@ public class UserSearchService {
 			callableStatement.setString(22, qbList.get(1).getMatchType());
 			callableStatement.setString(23, qbList.get(1).getSearchBy());
 			callableStatement.setString(24, queryUtil.listToString(qbList.get(1).getSearchValue()));
-			
+
 			callableStatement.setString(25, qbList.get(2).getRelation());
 			callableStatement.setString(26, qbList.get(2).getMatchType());
 			callableStatement.setString(27, qbList.get(2).getSearchBy());
 			callableStatement.setString(28, queryUtil.listToString(qbList.get(2).getSearchValue()));
-			
+
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
-			
+
 			callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
 			callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
@@ -1523,7 +1500,7 @@ public class UserSearchService {
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
 			callableStatement.setString(41, userSearchRequest.getConditionProductDesc());
-			
+
 			callableStatement.setString(42, accessedBy.toString());
 
 			callableStatement.execute();
@@ -1557,8 +1534,8 @@ public class UserSearchService {
 
 			searchDetails.setSearchId(searchId);
 			searchDetails
-			.setUserSearchQuery(objectMapper.readValue(userSearch.getSearchJson(), UserSearchRequest.class));
-			
+					.setUserSearchQuery(objectMapper.readValue(userSearch.getSearchJson(), UserSearchRequest.class));
+
 //			JsonNode jsonNode = new ObjectMapper().readTree(userSearch.getSearchJson());
 //			String country_code = jsonNode.get("countryCode").toString();
 //			if(country_code.contains(",")) {
@@ -1584,10 +1561,10 @@ public class UserSearchService {
 			searchDetails.setRecordsDownloaded(userSearch.getRecordsDownloaded());
 		}
 		list.add(searchDetails);
-		
+
 		searchDetailsResponse.setQueryList(list);
 		searchDetailsResponse = convertCountryToList(searchDetailsResponse);
-		
+
 		return searchDetailsResponse;
 
 	}
@@ -1624,7 +1601,7 @@ public class UserSearchService {
 //				searchDetails
 //				.setUserSearchQuery(request);
 //			}
-			
+
 			searchDetails.setIsDownloaded(userSearch.getIsDownloaded());
 			searchDetails.setDownloadedDate(userSearch.getDownloadedDate());
 			searchDetails.setCreatedDate(userSearch.getCreatedDate());
@@ -1646,20 +1623,21 @@ public class UserSearchService {
 	@Autowired
 	private RestTemplate restTemplate;
 
-	public SearchDetailsResponse listAllQueries(Long userId, Long uplineId, String isDownloaded, Long accessedBy, Pageable pageable)
-			throws Exception {
+	public SearchDetailsResponse listAllQueries(Long userId, Long uplineId, String isDownloaded, Long accessedBy,
+			Pageable pageable) throws Exception {
 
 		SearchDetailsResponse searchDetailsResponse = new SearchDetailsResponse();
 		List<SearchDetails> list = new ArrayList<SearchDetails>();
 		SearchDetails searchDetails = null;
 		List<UserSearch> userSearchList = null;
-	
-		pageable = PageRequest.of(pageable.getPageNumber()*10, pageable.getPageSize(), Sort.by("createdDate").descending());
+
+		pageable = PageRequest.of(pageable.getPageNumber() * 10, pageable.getPageSize(),
+				Sort.by("createdDate").descending());
 
 		if (userId != null) {
 			if (isDownloaded != null && isDownloaded != "")
-				userSearchList = userSearchRepository.findByCreatedByAndIsDownloaded(userId,
-						isDownloaded, pageable).getContent();
+				userSearchList = userSearchRepository.findByCreatedByAndIsDownloaded(userId, isDownloaded, pageable)
+						.getContent();
 			else
 				userSearchList = userSearchRepository.findByCreatedBy(userId, pageable).getContent();
 		} else if (uplineId != null) {
@@ -1667,7 +1645,8 @@ public class UserSearchService {
 				userSearchList = userSearchRepository.findByUplineIdAndIsDownloadedOrderByCreatedDateDesc(uplineId,
 						isDownloaded, pageable.getPageNumber(), pageable.getPageSize());
 			else
-				userSearchList = userSearchRepository.findByUplineIdOrderByCreatedDateDesc(uplineId, pageable.getPageNumber(), pageable.getPageSize());
+				userSearchList = userSearchRepository.findByUplineIdOrderByCreatedDateDesc(uplineId,
+						pageable.getPageNumber(), pageable.getPageSize());
 		} else {
 			if (isDownloaded != null && isDownloaded != "")
 				userSearchList = userSearchRepository.findByIsDownloaded(isDownloaded, pageable).getContent();
@@ -1706,20 +1685,19 @@ public class UserSearchService {
 //				searchDetails
 //				.setUserSearchQuery(request);
 //			}
-			
-			
-			
+
 			User userEntity = userRepository.findById(userSearch.getCreatedBy()).orElse(null);
-			
+
 			/*
-			String absUrl = usermanagementUrl + userSearch.getCreatedBy();
-			System.out.println("absUrl = "+ absUrl);
-			
-			ResponseEntity<UserDetailsResponse> responseEntity = restTemplate.exchange(absUrl, HttpMethod.GET,
-					new HttpEntity<Object>(headers), UserDetailsResponse.class);
-			UserDetailsResponse userDetailsResponse = responseEntity.getBody();*/
-			if(userEntity != null )
-			{
+			 * String absUrl = usermanagementUrl + userSearch.getCreatedBy();
+			 * System.out.println("absUrl = "+ absUrl);
+			 * 
+			 * ResponseEntity<UserDetailsResponse> responseEntity =
+			 * restTemplate.exchange(absUrl, HttpMethod.GET, new
+			 * HttpEntity<Object>(headers), UserDetailsResponse.class); UserDetailsResponse
+			 * userDetailsResponse = responseEntity.getBody();
+			 */
+			if (userEntity != null) {
 				searchDetails.setCreatedByName(userEntity.getFirstname() + " " + userEntity.getLastname());
 				searchDetails.setCreatedByEmail(userEntity.getEmail());
 			}
@@ -1729,22 +1707,22 @@ public class UserSearchService {
 			searchDetails.setDownloadedBy(userSearch.getDownloadedBy());
 
 			if (userSearch.getDownloadedBy() != null) {
-				/*absUrl = usermanagementUrl + userSearch.getDownloadedBy();
-				responseEntity = restTemplate.exchange(absUrl, HttpMethod.GET, new HttpEntity<Object>(headers),
-						UserDetailsResponse.class);
-				userDetailsResponse = responseEntity.getBody();*/
-				
+				/*
+				 * absUrl = usermanagementUrl + userSearch.getDownloadedBy(); responseEntity =
+				 * restTemplate.exchange(absUrl, HttpMethod.GET, new
+				 * HttpEntity<Object>(headers), UserDetailsResponse.class); userDetailsResponse
+				 * = responseEntity.getBody();
+				 */
+
 				userEntity = userRepository.findById(userSearch.getDownloadedBy()).orElse(null);
-				
-				if(userEntity != null )
-				{
-					searchDetails.setDownloadedByName(
-							userEntity.getFirstname() + " " + userEntity.getLastname());
+
+				if (userEntity != null) {
+					searchDetails.setDownloadedByName(userEntity.getFirstname() + " " + userEntity.getLastname());
 					searchDetails.setDownloadedByEmail(userEntity.getEmail());
 				}
-				
+
 			}
-			
+
 			searchDetails.setRecordsDownloaded(userSearch.getRecordsDownloaded());
 
 			list.add(searchDetails);
@@ -1752,13 +1730,12 @@ public class UserSearchService {
 
 		searchDetailsResponse.setQueryList(list);
 		searchDetailsResponse = convertCountryToList(searchDetailsResponse);
-		
+
 		return searchDetailsResponse;
 	}
-	
-	public long countAllQueries(Long userId, Long uplineId, String isDownloaded, Long accessedBy)
-			throws Exception {
-		
+
+	public long countAllQueries(Long userId, Long uplineId, String isDownloaded, Long accessedBy) throws Exception {
+
 		long count = 0l;
 
 		if (userId != null) {
@@ -1777,7 +1754,7 @@ public class UserSearchService {
 			else
 				count = userSearchRepository.count();
 		}
-		
+
 		return count;
 	}
 
@@ -1802,7 +1779,7 @@ public class UserSearchService {
 
 			String proeName = null;
 
-			if (suggestionRequest.getCountryCode().get(0).equalsIgnoreCase("IND")) 
+			if (suggestionRequest.getCountryCode().get(0).equalsIgnoreCase("IND"))
 				proeName = QueryConstant.listSuggestionBySearchProcedure;
 			else if (suggestionRequest.getCountryCode().get(0).equalsIgnoreCase("SEZ"))
 				proeName = QueryConstant.listSuggestionBySearchProcedureSEZ;
@@ -1812,7 +1789,7 @@ public class UserSearchService {
 			CallableStatement callableStatement = connection.prepareCall(proeName);
 			callableStatement.setString(1, suggestionRequest.getTradeType().getValue());
 			callableStatement.setString(2, "");
-			//callableStatement.setString(2, suggestionRequest.getCountryCode());
+			// callableStatement.setString(2, suggestionRequest.getCountryCode());
 			callableStatement.setString(3, suggestionRequest.getFromDate());
 			callableStatement.setString(4, suggestionRequest.getToDate());
 			callableStatement.setString(5, suggestionRequest.getSearchBy().getValue());
@@ -1847,8 +1824,9 @@ public class UserSearchService {
 
 	}
 
-	public CountryWiseCountResponse countrywisecount(UserSearchRequest userSearchRequest, Long accessedBy)throws Exception {
-		
+	public CountryWiseCountResponse countrywisecount(UserSearchRequest userSearchRequest, Long accessedBy)
+			throws Exception {
+
 		Connection connection = null;
 		ResultSet rs = null;
 		CountryWiseCountResponse countryWiseCountResponse = null;
@@ -1881,20 +1859,18 @@ public class UserSearchService {
 			callableStatement.setString(14, queryUtil.listToString(userSearchRequest.getCityDestinationList()));
 			callableStatement.setString(15, queryUtil.listToString(userSearchRequest.getPortOriginList()));
 			callableStatement.setString(16, queryUtil.listToString(userSearchRequest.getPortDestinationList()));
-			
-			
-			
+
 			int MAX_SIZE = 3;
 			int incSize = userSearchRequest.getQueryBuilder().size();
 			List<QueryBuilder> qbList = userSearchRequest.getQueryBuilder();
-			
+
 			for (int i = incSize; i < MAX_SIZE; i++) {
 				QueryBuilder qb = new QueryBuilder();
 				qb.setMatchType(null);
 				qb.setRelation(null);
 				qb.setSearchBy(null);
 				qb.setSearchValue(null);
-				if(qbList!=null) {
+				if (qbList != null) {
 					qbList.add(qb);
 				}
 			}
@@ -1907,15 +1883,15 @@ public class UserSearchService {
 			callableStatement.setString(22, qbList.get(1).getMatchType());
 			callableStatement.setString(23, qbList.get(1).getSearchBy());
 			callableStatement.setString(24, queryUtil.listToString(qbList.get(1).getSearchValue()));
-			
+
 			callableStatement.setString(25, qbList.get(2).getRelation());
 			callableStatement.setString(26, qbList.get(2).getMatchType());
 			callableStatement.setString(27, qbList.get(2).getSearchBy());
 			callableStatement.setString(28, queryUtil.listToString(qbList.get(2).getSearchValue()));
-			
+
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
-			
+
 			callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
 			callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
@@ -1927,9 +1903,8 @@ public class UserSearchService {
 			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
 			callableStatement.setString(41, userSearchRequest.getConditionProductDesc());
-			
+
 			callableStatement.setString(42, accessedBy.toString());
-			
 
 			callableStatement.execute();
 
@@ -1958,7 +1933,6 @@ public class UserSearchService {
 
 			String proeName = null;
 
-			
 			proeName = QueryConstant.listDistinctValueByColumnNameProcedure;
 
 			CallableStatement callableStatement = connection.prepareCall(proeName);
@@ -1978,20 +1952,18 @@ public class UserSearchService {
 			callableStatement.setString(14, queryUtil.listToString(userSearchRequest.getCityDestinationList()));
 			callableStatement.setString(15, queryUtil.listToString(userSearchRequest.getPortOriginList()));
 			callableStatement.setString(16, queryUtil.listToString(userSearchRequest.getPortDestinationList()));
-			
-			
-			
+
 			int MAX_SIZE = 3;
 			int incSize = userSearchRequest.getQueryBuilder().size();
 			List<QueryBuilder> qbList = userSearchRequest.getQueryBuilder();
-			
+
 			for (int i = incSize; i < MAX_SIZE; i++) {
 				QueryBuilder qb = new QueryBuilder();
 				qb.setMatchType(null);
 				qb.setRelation(null);
 				qb.setSearchBy(null);
 				qb.setSearchValue(null);
-				if(qbList!=null) {
+				if (qbList != null) {
 					qbList.add(qb);
 				}
 			}
@@ -2004,17 +1976,17 @@ public class UserSearchService {
 			callableStatement.setString(22, qbList.get(1).getMatchType());
 			callableStatement.setString(23, qbList.get(1).getSearchBy());
 			callableStatement.setString(24, queryUtil.listToString(qbList.get(1).getSearchValue()));
-			
+
 			callableStatement.setString(25, qbList.get(2).getRelation());
 			callableStatement.setString(26, qbList.get(2).getMatchType());
 			callableStatement.setString(27, qbList.get(2).getSearchBy());
 			callableStatement.setString(28, queryUtil.listToString(qbList.get(2).getSearchValue()));
-			
+
 			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
 			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
-			
+
 			callableStatement.setString(31, userSearchRequest.getColumnName());
-			
+
 			callableStatement.setString(32, userSearchRequest.getRangeQuantityStart());
 			callableStatement.setString(33, userSearchRequest.getRangeQuantityEnd());
 			callableStatement.setString(34, queryUtil.listToString(userSearchRequest.getConsumptionType()));
@@ -2026,9 +1998,8 @@ public class UserSearchService {
 			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getNotifyParty()));
 			callableStatement.setString(41, queryUtil.listToString(userSearchRequest.getProductDesc()));
 			callableStatement.setString(42, userSearchRequest.getConditionProductDesc());
-			
+
 			callableStatement.setString(43, accessedBy.toString());
-			
 
 			callableStatement.execute();
 
@@ -2046,8 +2017,7 @@ public class UserSearchService {
 		}
 		return listDistinctColumnValuesResponse;
 	}
-	
-	
+
 	private SearchDetailsResponse convertCountryToList(SearchDetailsResponse searchDetailsResponse) {
 
 		// Converting Country from String to List<String>
@@ -2064,62 +2034,132 @@ public class UserSearchService {
 
 		return searchDetailsResponse;
 	}
-	
-	
-	public SearchDetailsResponse listAllQueriesNew(Long userId, Long uplineId, String isDownloaded, Long accessedBy, String searchValue, Pageable pageable)
-			throws Exception {
+
+	public SearchDetailsResponse listAllQueriesNew(Long userId, Long uplineId, String isDownloaded, Long accessedBy,
+			String searchValue, Pageable pageable, Date fromDate, Date toDate) throws Exception {
 
 		SearchDetailsResponse searchDetailsResponse = new SearchDetailsResponse();
 		List<SearchDetails> list = new ArrayList<SearchDetails>();
 		SearchDetails searchDetails = null;
 		List<UserSearch> userSearchList = null;
-		if(pageable.getPageNumber() >0)
-			pageable = PageRequest.of(pageable.getPageNumber()-1, pageable.getPageSize(), Sort.by("createdDate").descending());
-		
-		if(searchValue != null  && searchValue != "")
-			searchValue = "%\"searchValue\"%"+searchValue+"%";
+
+		if (pageable.getPageNumber() > 0)
+			pageable = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize(),
+					Sort.by("createdDate").descending());
+
+		if (searchValue != null && searchValue != "")
+			searchValue = "%\"searchValue\"%" + searchValue + "%";
 
 		if (userId != null) {
 			if (isDownloaded != null && isDownloaded != "") {
-				if(searchValue != null && searchValue != "")
-					userSearchList = userSearchRepository.customByUserIdAndIsDownloadAndSearchValue(userId,isDownloaded,searchValue, pageable.getPageNumber(), pageable.getPageSize()); // Q1
-				else
-					userSearchList = userSearchRepository.findByCreatedByAndIsDownloaded(userId,isDownloaded, pageable).getContent();
+				if (searchValue != null && searchValue != "") {
+					if (fromDate != null)
+						userSearchList = userSearchRepository.customByUserIdAndIsDownloadAndSearchValueAndDateRange(
+								userId, isDownloaded, searchValue, pageable.getPageNumber(), pageable.getPageSize(),
+								fromDate, toDate); // D1
+					else
+						userSearchList = userSearchRepository.customByUserIdAndIsDownloadAndSearchValue(userId,
+								isDownloaded, searchValue, pageable.getPageNumber(), pageable.getPageSize()); // Q1
+				} else {
+					if (fromDate != null)
+						userSearchList = userSearchRepository.findByCreatedByAndIsDownloadedAndDateRange(userId,
+								isDownloaded, pageable.getPageNumber(), pageable.getPageSize(), fromDate, toDate); // D2
+					else
+						userSearchList = userSearchRepository
+								.findByCreatedByAndIsDownloaded(userId, isDownloaded, pageable).getContent();
+				}
+
+			} else {
+				if (searchValue != null && searchValue != "") {
+					if (fromDate != null)
+						userSearchList = userSearchRepository.customByUserIdAndSearchValueAndDateRange(userId,
+								searchValue, pageable.getPageNumber(), pageable.getPageSize(), fromDate, toDate); // D3
+					else
+						userSearchList = userSearchRepository.customByUserIdAndSearchValue(userId, searchValue,
+								pageable.getPageNumber(), pageable.getPageSize()); // Q2
+				} else {
+					if (fromDate != null)
+						userSearchList = userSearchRepository.customByCreatedByAndDateRange(userId,
+								pageable.getPageNumber(), pageable.getPageSize(), fromDate, toDate);// D4
+					else
+						userSearchList = userSearchRepository.findByCreatedBy(userId, pageable).getContent();
+				}
+
 			}
-			else {
-				if(searchValue != null && searchValue != "")
-					userSearchList = userSearchRepository.customByUserIdAndSearchValue(userId,searchValue, pageable.getPageNumber(), pageable.getPageSize()); //Q2
-				else
-					userSearchList = userSearchRepository.findByCreatedBy(userId, pageable).getContent();
-			}
-				
+
 		} else if (uplineId != null) {
 			if (isDownloaded != null && isDownloaded != "") {
-				if(searchValue != null && searchValue != "")
-					userSearchList = userSearchRepository.customByUplineIdAndIsDownloadAndSearchValue(uplineId,isDownloaded,searchValue, pageable.getPageNumber(), pageable.getPageSize());// Q3
-				else
-					userSearchList = userSearchRepository.findByUplineIdAndIsDownloadedOrderByCreatedDateDesc(uplineId,isDownloaded, pageable.getPageNumber(), pageable.getPageSize());
+				if (searchValue != null && searchValue != "") {
+					if (fromDate != null)
+						userSearchList = userSearchRepository.customByUplineIdAndIsDownloadAndSearchValueAndDateRange(
+								uplineId, isDownloaded, searchValue, pageable.getPageNumber(), pageable.getPageSize(),
+								fromDate, toDate);// D5
+					else
+						userSearchList = userSearchRepository.customByUplineIdAndIsDownloadAndSearchValue(uplineId,
+								isDownloaded, searchValue, pageable.getPageNumber(), pageable.getPageSize());// Q3
+				}
+
+				else {
+					if (fromDate != null)
+						userSearchList = userSearchRepository
+								.findByUplineIdAndIsDownloadedAndDateRangeOrderByCreatedDateDesc(uplineId, isDownloaded,
+										pageable.getPageNumber(), pageable.getPageSize(), fromDate, toDate); // D6
+					else
+						userSearchList = userSearchRepository.findByUplineIdAndIsDownloadedOrderByCreatedDateDesc(
+								uplineId, isDownloaded, pageable.getPageNumber(), pageable.getPageSize());
+				}
+
+			} else {
+				if (searchValue != null && searchValue != "") {
+					if (fromDate != null)
+						userSearchList = userSearchRepository.customByUplineIdAndSearchValueAndDateRange(uplineId,
+								searchValue, pageable.getPageNumber(), pageable.getPageSize(), fromDate, toDate); // D7
+					else
+						userSearchList = userSearchRepository.customByUplineIdAndSearchValue(uplineId, searchValue,
+								pageable.getPageNumber(), pageable.getPageSize()); // Q4
+				} else {
+					if (fromDate != null)
+						userSearchList = userSearchRepository.findByUplineIdAndDateRangeOrderByCreatedDateDesc(uplineId,
+								pageable.getPageNumber(), pageable.getPageSize(), fromDate, toDate);// D8
+					else
+						userSearchList = userSearchRepository.findByUplineIdOrderByCreatedDateDesc(uplineId,
+								pageable.getPageNumber(), pageable.getPageSize());
+				}
 			}
-			else {
-				if(searchValue != null && searchValue != "")
-					userSearchList = userSearchRepository.customByUplineIdAndSearchValue(uplineId,searchValue, pageable.getPageNumber(), pageable.getPageSize()); //Q4
-				else
-					userSearchList = userSearchRepository.findByUplineIdOrderByCreatedDateDesc(uplineId, pageable.getPageNumber(), pageable.getPageSize());
-			}
-				
+
 		} else {
 			if (isDownloaded != null && isDownloaded != "") {
-				if(searchValue != null && searchValue != "")
-					userSearchList = userSearchRepository.customByIsDownloadedAndSearchValue(isDownloaded,searchValue, pageable.getPageNumber(), pageable.getPageSize());//Q5
-				else
-					userSearchList = userSearchRepository.findByIsDownloaded(isDownloaded, pageable).getContent();
+				if (searchValue != null && searchValue != "") {
+					if (fromDate != null)
+						userSearchList = userSearchRepository.customByIsDownloadedAndSearchValueAndDateRange(
+								isDownloaded, searchValue, pageable.getPageNumber(), pageable.getPageSize(), fromDate,
+								toDate);// D9
+					else
+						userSearchList = userSearchRepository.customByIsDownloadedAndSearchValue(isDownloaded,
+								searchValue, pageable.getPageNumber(), pageable.getPageSize());// Q5
+				} else {
+					if (fromDate != null)
+						userSearchList = userSearchRepository.findByIsDownloadedAndDateRange(isDownloaded,
+								pageable.getPageNumber(), pageable.getPageSize(), fromDate, toDate);// D10
+					else
+						userSearchList = userSearchRepository.findByIsDownloaded(isDownloaded, pageable).getContent();
+				}
+			} else {
+				if (searchValue != null && searchValue != "") {
+					if (fromDate != null)
+						userSearchList = userSearchRepository.customBySearchValueAndDateRange(searchValue,
+								pageable.getPageNumber(), pageable.getPageSize(), fromDate, toDate); // D11
+					else
+						userSearchList = userSearchRepository.customBySearchValue(searchValue, pageable.getPageNumber(),
+								pageable.getPageSize()); // Q6
+				} else {
+					if (fromDate != null)
+						userSearchList = userSearchRepository.findAllByDateRange(pageable.getPageNumber(),
+								pageable.getPageSize(), fromDate, toDate);// D12
+					else
+						userSearchList = userSearchRepository.findAll(pageable).getContent();
+				}
 			}
-			else {
-				if(searchValue != null && searchValue != "")
-					userSearchList = userSearchRepository.customBySearchValue(searchValue, pageable.getPageNumber(), pageable.getPageSize()); //Q6
-				else
-					userSearchList = userSearchRepository.findAll(pageable).getContent();
-			}	
 		}
 
 		// Fetch user management Data From User Data
@@ -2137,13 +2177,10 @@ public class UserSearchService {
 			searchDetails.setCreatedBy(userSearch.getCreatedBy());
 			searchDetails
 					.setUserSearchQuery(objectMapper.readValue(userSearch.getSearchJson(), UserSearchRequest.class));
-			
-			
-			
+
 			User userEntity = userRepository.findById(userSearch.getCreatedBy()).orElse(null);
-			
-			if(userEntity != null )
-			{
+
+			if (userEntity != null) {
 				searchDetails.setCreatedByName(userEntity.getFirstname() + " " + userEntity.getLastname());
 				searchDetails.setCreatedByEmail(userEntity.getEmail());
 			}
@@ -2153,18 +2190,16 @@ public class UserSearchService {
 			searchDetails.setDownloadedBy(userSearch.getDownloadedBy());
 
 			if (userSearch.getDownloadedBy() != null) {
-				
+
 				userEntity = userRepository.findById(userSearch.getDownloadedBy()).orElse(null);
-				
-				if(userEntity != null )
-				{
-					searchDetails.setDownloadedByName(
-							userEntity.getFirstname() + " " + userEntity.getLastname());
+
+				if (userEntity != null) {
+					searchDetails.setDownloadedByName(userEntity.getFirstname() + " " + userEntity.getLastname());
 					searchDetails.setDownloadedByEmail(userEntity.getEmail());
 				}
-				
+
 			}
-			
+
 			searchDetails.setRecordsDownloaded(userSearch.getRecordsDownloaded());
 
 			list.add(searchDetails);
@@ -2172,62 +2207,108 @@ public class UserSearchService {
 
 		searchDetailsResponse.setQueryList(list);
 		searchDetailsResponse = convertCountryToList(searchDetailsResponse);
-		
+
 		return searchDetailsResponse;
 	}
-	
-	
-	public long countAllQueriesNew(Long userId, Long uplineId, String isDownloaded, String searchValue, Long accessedBy)
-			throws Exception {
-		
-		
-		
+
+	public long countAllQueriesNew(Long userId, Long uplineId, String isDownloaded, String searchValue, Long accessedBy,
+			Date fromDate, Date toDate) throws Exception {
+
 		long count = 0l;
-		if(searchValue != null  && searchValue != "")
-			searchValue = "%\"searchValue\"%"+searchValue+"%";
+		if (searchValue != null && searchValue != "")
+			searchValue = "%\"searchValue\"%" + searchValue + "%";
 
 		if (userId != null) {
 			if (isDownloaded != null && isDownloaded != "") {
-				if(searchValue != null && searchValue != "")
-					count = userSearchRepository.customCountByUserIdAndIsDownloadAndSearchValue(userId, isDownloaded, searchValue);
-				else
-					count = userSearchRepository.countByCreatedByAndIsDownloaded(userId, isDownloaded);
-			}
-			else {
-				if(searchValue != null && searchValue != "")
-					count = userSearchRepository.customCountByUserIdAndSearchValue(userId, searchValue);
-				else
-					count = userSearchRepository.countByCreatedBy(userId);
+				if (searchValue != null && searchValue != "") {
+					if (fromDate != null)
+						count = userSearchRepository.customCountByUserIdAndIsDownloadAndSearchValueAndDateRange(userId,
+								isDownloaded, searchValue, fromDate, toDate); // DC1
+					else
+						count = userSearchRepository.customCountByUserIdAndIsDownloadAndSearchValue(userId,
+								isDownloaded, searchValue);
+				} else {
+					if (fromDate != null)
+						count = userSearchRepository.countByCreatedByAndIsDownloadedAndDateRange(userId, isDownloaded,
+								fromDate, toDate); // DC2
+					else
+						count = userSearchRepository.countByCreatedByAndIsDownloaded(userId, isDownloaded);
+				}
+			} else {
+				if (searchValue != null && searchValue != "") {
+					if (fromDate != null)
+						count = userSearchRepository.customCountByUserIdAndSearchValueAndDateRange(userId, searchValue,
+								fromDate, toDate); // DC3
+					else
+						count = userSearchRepository.customCountByUserIdAndSearchValue(userId, searchValue);
+				} else {
+					if (fromDate != null)
+						count = userSearchRepository.countByCreatedByAndDateRnage(userId, fromDate, toDate); // DC4
+					else
+						count = userSearchRepository.countByCreatedBy(userId);
+				}
 			}
 		} else if (uplineId != null) {
 			if (isDownloaded != null && isDownloaded != "") {
-				if(searchValue != null && searchValue != "")
-					count = userSearchRepository.customCountByUplineIdAndIsDownloadAndSearchValue(uplineId, isDownloaded, searchValue);
-				else
-					count = userSearchRepository.countByUplineIdAndIsDownloaded(uplineId, isDownloaded);
-			}
-			else {
-				if(searchValue != null && searchValue != "")
-					count = userSearchRepository.customCountByUplineIdAndSearchValue(uplineId, searchValue);
-				else
-					count = userSearchRepository.countByUplineId(uplineId);
+				if (searchValue != null && searchValue != "") {
+					if (fromDate != null)
+						count = userSearchRepository.customCountByUplineIdAndIsDownloadAndSearchValueAndDateRange(
+								uplineId, isDownloaded, searchValue, fromDate, toDate);// DC5
+					else
+						count = userSearchRepository.customCountByUplineIdAndIsDownloadAndSearchValue(uplineId,
+								isDownloaded, searchValue);
+				} else {
+					if (fromDate != null)
+						count = userSearchRepository.countByUplineIdAndIsDownloadedAndDateRange(uplineId, isDownloaded,
+								fromDate, toDate);// DC6
+					else
+						count = userSearchRepository.countByUplineIdAndIsDownloaded(uplineId, isDownloaded);
+				}
+			} else {
+				if (searchValue != null && searchValue != "") {
+					if (fromDate != null)
+						count = userSearchRepository.customCountByUplineIdAndSearchValueAndDateRange(uplineId,
+								searchValue, fromDate, toDate);// DC7
+					else
+						count = userSearchRepository.customCountByUplineIdAndSearchValue(uplineId, searchValue);
+				} else {
+					if (fromDate != null)
+						count = userSearchRepository.countByUplineIdAndDateRange(uplineId, fromDate, toDate);// DC8
+					else
+						count = userSearchRepository.countByUplineId(uplineId);
+				}
 			}
 		} else {
 			if (isDownloaded != null && isDownloaded != "") {
-				if(searchValue != null && searchValue != "")
-					count = userSearchRepository.customCountByIsDownloadedAndSearchValue(isDownloaded, searchValue);
-				else
-					count = userSearchRepository.countByIsDownloaded(isDownloaded);
-			}
-			else {
-				if(searchValue != null && searchValue != "")
-					count = userSearchRepository.customCountBySearchValue(searchValue);
-				else
-					count = userSearchRepository.count();
+				if (searchValue != null && searchValue != "") {
+					if (fromDate != null)
+						count = userSearchRepository.customCountByIsDownloadedAndSearchValueAndDateRange(isDownloaded,
+								searchValue, fromDate, toDate);// DC9
+					else
+						count = userSearchRepository.customCountByIsDownloadedAndSearchValue(isDownloaded, searchValue);
+				} else {
+					if (fromDate != null)
+						count = userSearchRepository.countByIsDownloadedAndDateRange(isDownloaded, fromDate, toDate);// DC10
+					else
+						count = userSearchRepository.countByIsDownloaded(isDownloaded);
+				}
+			} else {
+				if (searchValue != null && searchValue != "") {
+					if (fromDate != null)
+						count = userSearchRepository.customCountBySearchValueAndDateRange(searchValue, fromDate,
+								toDate);// DC11
+					else
+						count = userSearchRepository.customCountBySearchValue(searchValue);
+				} else {
+					if (fromDate != null)
+						count = userSearchRepository.countByDateRange(fromDate, toDate);// DC12
+					else
+						count = userSearchRepository.count();
+				}
 			}
 		}
-		
+
 		return count;
-	
+
 	}
 }
