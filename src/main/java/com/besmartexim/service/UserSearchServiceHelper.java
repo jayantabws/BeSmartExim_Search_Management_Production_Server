@@ -158,7 +158,9 @@ public class UserSearchServiceHelper {
 					exp.setPlace_of_discharge(rs.getString("place_of_discharge"));
 					exp.setProduct_description(rs.getString("product_description"));
 					exp.setPurpose_consumption(rs.getString("purpose_consumption"));
-					exp.setQuantity((rs.getString("quantity") != null) ? rs.getBigDecimal("quantity") : null);
+					exp.setQuantity((rs.getString("quantity") != null)
+							? new BigDecimal(rs.getString("quantity")).setScale(3, RoundingMode.HALF_UP)
+							: null);
 					exp.setQuantity_of_container((rs.getString("quantity_of_container") != null)
 							? rs.getBigDecimal("quantity_of_container").toPlainString()
 							: null);
@@ -166,8 +168,9 @@ public class UserSearchServiceHelper {
 					exp.setRecepient_name(rs.getString("recepient_name"));
 					exp.setSb_no(rs.getString("sb_no"));
 					exp.setShip_name(rs.getString("ship_name"));
-					exp.setStd_quantity(
-							(rs.getString("std_quantity") != null) ? rs.getBigDecimal("std_quantity") : null);
+					exp.setStd_quantity((rs.getString("std_quantity") != null)
+							? new BigDecimal(rs.getString("std_quantity")).setScale(3, RoundingMode.HALF_UP)
+							: null);
 					exp.setStd_unit(rs.getString("std_unit"));
 					exp.setSubitem_no(rs.getString("subitem_no"));
 					exp.setTax_amount(
@@ -178,8 +181,9 @@ public class UserSearchServiceHelper {
 							: null);
 					// exp.setTotal_fob_value((rs.getString("total_fob_value") != null) ?
 					// rs.getDouble("total_fob_value").toPlainString() : null);
-					exp.setTotal_fob_value(
-							(rs.getString("total_fob_value") != null) ? rs.getBigDecimal("total_fob_value") : null);
+					exp.setTotal_fob_value((rs.getString("total_fob_value") != null)
+							? new BigDecimal(rs.getString("total_fob_value")).setScale(3, RoundingMode.HALF_UP)
+							: null);
 					exp.setTotal_fob_value_pkr((rs.getString("total_fob_value_pkr") != null)
 							? rs.getBigDecimal("total_fob_value_pkr").toPlainString()
 							: null);
@@ -205,19 +209,23 @@ public class UserSearchServiceHelper {
 					exp.setTransport_doc_no(rs.getString("transport_doc_no"));
 					exp.setType_of_cargo(rs.getString("type_of_cargo"));
 					exp.setUnit(rs.getString("unit"));
-					exp.setUnit_price((rs.getString("unit_price") != null) ? rs.getBigDecimal("unit_price") : null);
+					exp.setUnit_price((rs.getString("unit_price") != null)
+							? new BigDecimal(rs.getString("unit_price")).setScale(3, RoundingMode.HALF_UP)
+							: null);
 					exp.setVariety(rs.getString("variety"));
 					exp.setVoyage_number(rs.getString("voyage_number"));
 					exp.setYear(rs.getString("year"));
 					exp.setPlace_of_receipt(rs.getString("place_of_receipt"));
 					exp.setFob_value_currency(rs.getString("fob_value_currency"));
-					exp.setUnit_price_usd(
-							(rs.getString("unit_price_usd") != null) ? rs.getBigDecimal("unit_price_usd") : null);
+					exp.setUnit_price_usd((rs.getString("unit_price_usd") != null)
+							? new BigDecimal(rs.getString("unit_price_usd")).setScale(3, RoundingMode.HALF_UP)
+							: null);
 					exp.setTotal_value_bdt((rs.getString("total_value_bdt") != null)
 							? rs.getBigDecimal("total_value_bdt").toPlainString()
 							: null);
-					exp.setTotal_value_usd(
-							(rs.getString("total_value_usd") != null) ? rs.getBigDecimal("total_value_usd") : null);
+					exp.setTotal_value_usd((rs.getString("total_value_usd") != null)
+							? new BigDecimal(rs.getString("total_value_usd")).setScale(3, RoundingMode.HALF_UP)
+							: null);
 
 					exp.setCif_value_usd(
 							(rs.getString("cif_value_usd") != null) ? rs.getBigDecimal("cif_value_usd").toPlainString()
@@ -231,9 +239,12 @@ public class UserSearchServiceHelper {
 					exp.setCtry_name(rs.getString("ctry_name"));
 
 					// exp.setStd_unit_rate_usd(Float.toString(rs.getFloat("std_unit_rate_usd")));
-					exp.setStd_unit_rate_usd(
-							(rs.getString("std_unit_rate_usd") != null) ? rs.getBigDecimal("std_unit_rate_usd") : null);
-					exp.setDraw_back((rs.getString("draw_back") != null) ? rs.getBigDecimal("draw_back") : null);
+					exp.setStd_unit_rate_usd((rs.getString("std_unit_rate_usd") != null)
+							? new BigDecimal(rs.getString("std_unit_rate_usd")).setScale(3, RoundingMode.HALF_UP)
+							: null);
+					exp.setDraw_back((rs.getString("draw_back") != null)
+							? new BigDecimal(rs.getString("draw_back")).setScale(3, RoundingMode.HALF_UP)
+							: null);
 
 					list.add(exp);
 				}
@@ -287,7 +298,9 @@ public class UserSearchServiceHelper {
 					imp.setDestination_country(rs.getString("destination_country"));
 					imp.setDestination_port(rs.getString("destination_port"));
 					imp.setDestination_port_code(rs.getString("destination_port_code"));
-					imp.setDuty((rs.getString("duty") != null) ? rs.getBigDecimal("duty") : null);
+					imp.setDuty((rs.getString("duty") != null)
+							? new BigDecimal(rs.getString("duty")).setScale(3, RoundingMode.HALF_UP)
+							: null);
 					imp.setDuty_mod(rs.getString("duty_mod"));
 					imp.setEconomic_zone(rs.getString("economic_zone"));
 					imp.setExchange_rate(
@@ -364,10 +377,13 @@ public class UserSearchServiceHelper {
 					imp.setPackage_description(rs.getString("package_description"));
 					imp.setPackage_type(rs.getString("package_type"));
 					imp.setProduct_description(rs.getString("product_description"));
-					imp.setQuantity((rs.getString("quantity") != null) ? rs.getBigDecimal("quantity") : null);
+					imp.setQuantity((rs.getString("quantity") != null)
+							? new BigDecimal(rs.getString("quantity")).setScale(3, RoundingMode.HALF_UP)
+							: null);
 					imp.setShip_name(rs.getString("ship_name"));
-					imp.setStd_quantity(
-							(rs.getString("std_quantity") != null) ? rs.getBigDecimal("std_quantity") : null);
+					imp.setStd_quantity((rs.getString("std_quantity") != null)
+							? new BigDecimal(rs.getString("std_quantity")).setScale(3, RoundingMode.HALF_UP)
+							: null);
 					imp.setStd_unit(rs.getString("std_unit"));
 					imp.setSubitem_no(rs.getString("subitem_no"));
 					imp.setTax_amount(
@@ -386,7 +402,9 @@ public class UserSearchServiceHelper {
 					imp.setTotal_invoice_value_usd((rs.getString("total_invoice_value_usd") != null)
 							? rs.getBigDecimal("total_invoice_value_usd").toPlainString()
 							: null);
-					imp.setTotal_value((rs.getString("total_value") != null) ? rs.getBigDecimal("total_value") : null);
+					imp.setTotal_value((rs.getString("total_value") != null)
+							? new BigDecimal(rs.getString("total_value")).setScale(3, RoundingMode.HALF_UP)
+							: null);
 					imp.setTotal_value_bdt((rs.getString("total_value_bdt") != null)
 							? rs.getBigDecimal("total_value_bdt").toPlainString()
 							: null);
@@ -420,21 +438,25 @@ public class UserSearchServiceHelper {
 					imp.setTotal_value_uah((rs.getString("total_value_uah") != null)
 							? rs.getBigDecimal("total_value_uah").toPlainString()
 							: null);
-					imp.setTotal_value_usd(
-							(rs.getString("total_value_usd") != null) ? rs.getBigDecimal("total_value_usd") : null);
+					imp.setTotal_value_usd((rs.getString("total_value_usd") != null)
+							? new BigDecimal(rs.getString("total_value_usd")).setScale(3, RoundingMode.HALF_UP)
+							: null);
 					imp.setTransport_company(rs.getString("transport_company"));
 					imp.setTransport_doc_date(rs.getString("transport_doc_date"));
 					imp.setTransport_doc_no(rs.getString("transport_doc_no"));
 					imp.setUnit(rs.getString("unit"));
-					imp.setUnit_price((rs.getString("unit_price") != null) ? rs.getBigDecimal("unit_price") : null);
+					imp.setUnit_price((rs.getString("unit_price") != null)
+							? new BigDecimal(rs.getString("unit_price")).setScale(3, RoundingMode.HALF_UP)
+							: null);
 					imp.setUnit_price_bdt((rs.getString("unit_price_bdt") != null)
 							? rs.getBigDecimal("unit_price_bdt").toPlainString()
 							: null);
 					imp.setUnit_price_kes((rs.getString("unit_price_kes") != null)
 							? rs.getBigDecimal("unit_price_kes").toPlainString()
 							: null);
-					imp.setUnit_price_usd(
-							(rs.getString("unit_price_usd") != null) ? rs.getBigDecimal("unit_price_usd") : null);
+					imp.setUnit_price_usd((rs.getString("unit_price_usd") != null)
+							? new BigDecimal(rs.getString("unit_price_usd")).setScale(3, RoundingMode.HALF_UP)
+							: null);
 					imp.setValue_added_tax_amount((rs.getString("value_added_tax_amount") != null)
 							? rs.getBigDecimal("value_added_tax_amount").toPlainString()
 							: null);
@@ -453,8 +475,9 @@ public class UserSearchServiceHelper {
 					imp.setCtry_code(rs.getString("ctry_code"));
 					imp.setCtry_name(rs.getString("ctry_name"));
 
-					imp.setStd_unit_rate_usd(
-							(rs.getString("std_unit_rate_usd") != null) ? rs.getBigDecimal("std_unit_rate_usd") : null);
+					imp.setStd_unit_rate_usd((rs.getString("std_unit_rate_usd") != null)
+							? new BigDecimal(rs.getString("std_unit_rate_usd")).setScale(3, RoundingMode.HALF_UP)
+							: null);
 					// imp.setStd_unit_rate_usd(rs.getString("std_unit_rate_usd"));
 					list.add(imp);
 				}
