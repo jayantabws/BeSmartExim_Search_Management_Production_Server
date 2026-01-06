@@ -2,6 +2,7 @@ package com.besmartexim.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -13,7 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +28,8 @@ import com.besmartexim.dto.request.SearchCountUpdateRequest;
 import com.besmartexim.dto.request.SuggestionRequest;
 import com.besmartexim.dto.request.UserSearchRequest;
 import com.besmartexim.dto.response.CountryWiseCountResponse;
+import com.besmartexim.dto.response.GraphResponse;
+import com.besmartexim.dto.response.HsCodeList;
 import com.besmartexim.dto.response.ListCitiesResponse;
 import com.besmartexim.dto.response.ListCountriesResponse;
 import com.besmartexim.dto.response.ListDistinctColumnValuesResponse;
@@ -329,13 +334,13 @@ public class UserSearchController {
 		return new ResponseEntity<>(listDistinctColumnValuesResponse, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/search/listAllnew", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity allQueriesNew(@RequestParam(required = false) Long userId,
+	@GetMapping(value = "/search/listAllnew", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<SearchDetailsResponse> allQueriesNew(@RequestParam(required = false) Long userId,
 			@RequestParam(required = false) Long uplineId, @RequestParam(required = false) String isDownloaded,
 			@RequestParam(required = false) String searchValue, @RequestParam(defaultValue = "0") int pageNumber,
 			@RequestParam(defaultValue = "20") int pageSize, @RequestParam(required = false) String fromDate,
-			@RequestParam(required = false) String toDate,
-			@RequestHeader(value = "accessedBy", required = true) Long accessedBy) throws Exception {
+			@RequestParam(required = false) String toDate, @RequestHeader(required = true) Long accessedBy)
+			throws Exception {
 
 		logger.info("Request : /search-management/listAllnew");
 
@@ -355,16 +360,16 @@ public class UserSearchController {
 		SearchDetailsResponse searchDetailsResponse = userSearchService.listAllQueriesNew(userId, uplineId,
 				isDownloaded, accessedBy, searchValue, PageRequest.of(pageNumber, pageSize), fd, td);
 
-		return new ResponseEntity<>(searchDetailsResponse, HttpStatus.OK);
+		return ResponseEntity.ok(searchDetailsResponse);
 
 	}
 
-	@RequestMapping(value = "/search/countAllnew", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity countAllQueriesNew(@RequestParam(required = false) Long userId,
+	@GetMapping(value = "/search/countAllnew", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Long> countAllQueriesNew(@RequestParam(required = false) Long userId,
 			@RequestParam(required = false) Long uplineId, @RequestParam(required = false) String isDownloaded,
 			@RequestParam(required = false) String searchValue, @RequestParam(required = false) String fromDate,
-			@RequestParam(required = false) String toDate,
-			@RequestHeader(value = "accessedBy", required = true) Long accessedBy) throws Exception {
+			@RequestParam(required = false) String toDate, @RequestHeader(required = true) Long accessedBy)
+			throws Exception {
 
 		logger.info("Request : /search-management/countAllnew");
 
@@ -381,10 +386,77 @@ public class UserSearchController {
 			td = new Date();
 		}
 
-		long count = userSearchService.countAllQueriesNew(userId, uplineId, isDownloaded, searchValue, accessedBy, fd,
+		Long count = userSearchService.countAllQueriesNew(userId, uplineId, isDownloaded, searchValue, accessedBy, fd,
 				td);
 
-		return new ResponseEntity<>(count, HttpStatus.OK);
+		return ResponseEntity.ok(count);
 
+	}
+
+	@PostMapping(value = "/getvalue", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> getTotalValue(@RequestBody @Valid UserSearchRequest userSearchRequest,
+			@RequestHeader(required = true) Long accessedBy) throws Exception {
+		logger.info("Request : /search-management/getTotalValue");
+
+		Long total_value = userSearchService.getValue(userSearchRequest, accessedBy);
+
+		return ResponseEntity.ok(total_value);
+	}
+
+	@PostMapping(value = "/searchdepth", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> searchForInDepth(@RequestBody @Valid UserSearchRequest userSearchRequest,
+			@RequestHeader(required = true) Long accessedBy) throws Exception {
+		logger.info("Request : /search-management/searchdepth");
+
+		if (userSearchRequest.getSearchId() == null || userSearchRequest.getSearchId().equals("")
+				|| userSearchRequest.getSearchId() == 0) {
+			logger.error(
+					"=========================== Invalid Search ID, Please Check =========================================");
+			return new ResponseEntity<>("Invalid Search ID, Please Check", HttpStatus.BAD_REQUEST);
+		}
+
+		if ("incoterm".equalsIgnoreCase(userSearchRequest.getOrderByColumn())
+				&& "IMPORT".equalsIgnoreCase(userSearchRequest.getTradeType().getValue())) {
+			userSearchRequest.setOrderByColumn("incoterms");
+		}
+
+		UserSearchResponse userSearchResponse = userSearchService.searchInDepth(userSearchRequest, accessedBy);
+
+		return ResponseEntity.ok(userSearchResponse);
+	}
+
+	@PostMapping(value = "/monthwiseindepth", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ListMonthwiseResponse> listmonthwiseDepth(@RequestBody UserSearchRequest userSearchRequest,
+			@RequestHeader(required = true) Long accessedBy) throws Exception {
+		logger.info("Request : /search-management/monthwiseindepth");
+
+		ListMonthwiseResponse listMonthwiseResponse = userSearchService.listmonthwise(userSearchRequest, accessedBy,
+				"depth");
+
+		return ResponseEntity.ok(listMonthwiseResponse);
+	}
+
+	@GetMapping(value = "/industrygraph", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<GraphResponse>> getIndustryGraphData(@RequestParam(required = true) String exImp,
+			@RequestParam(required = true) String fromDate, @RequestParam(required = true) String toDate,
+			@RequestParam(required = true) String hsCode, @RequestHeader(required = true) Long accessedBy)
+			throws Exception {
+		logger.info("Request : /search-management/industrygraph");
+
+		List<GraphResponse> res = this.userSearchService.industryGraph(exImp, fromDate, toDate, hsCode);
+
+		return ResponseEntity.ok(res);
+	}
+
+	@GetMapping(value = "/hscodelist", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<HsCodeList>> getHsCodeList(@RequestParam(required = true) String exImp,
+			@RequestParam(required = true) Integer digit, @RequestHeader(required = true) Long accessedBy)
+			throws Exception {
+
+		logger.info("Request : /search-management/hscodelist");
+
+		List<HsCodeList> listHscodesResponse = userSearchService.getListOfHsCode(exImp, digit, accessedBy);
+
+		return ResponseEntity.ok(listHscodesResponse);
 	}
 }

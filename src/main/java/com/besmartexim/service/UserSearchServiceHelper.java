@@ -1389,4 +1389,42 @@ public class UserSearchServiceHelper {
 		}
 		return res;
 	}
+	
+	public ListMonthwiseResponse creteListMonthwiseForInDepth(ResultSet rs) throws Exception {
+
+		ListMonthwiseResponse listMonthwiseResponse = new ListMonthwiseResponse();
+		BigDecimal bd = new BigDecimal("0.00");
+		Double qnt = 0.0d;
+		Long sc = 0l;
+		String month_name;
+
+		List<ListMonthwise> list = new ArrayList<ListMonthwise>();
+
+		while (rs.next()) {
+			ListMonthwise listMonthwise = new ListMonthwise();
+
+			month_name = rs.getString("month_name");
+			if (month_name == null)
+				continue;
+
+			listMonthwise.setMonth_name(rs.getString("month_name"));
+			listMonthwise.setValue_inr(Double.parseDouble(String.format("%.2f", rs.getDouble("value_inr"))));
+			listMonthwise.setValue_usd(Double.parseDouble(String.format("%.2f", rs.getDouble("value_usd"))));
+			listMonthwise.setQuantity(Double.parseDouble(String.format("%.2f", rs.getDouble("total_count"))));
+			listMonthwise.setShare(Double.parseDouble(String.format("%.2f", rs.getDouble("tot_share"))));
+			listMonthwise.setShipment_count(rs.getLong("shipment_count"));
+
+			qnt = qnt + rs.getDouble("total_count");
+			bd = bd.add(BigDecimal.valueOf(rs.getDouble("value_usd")));
+			sc = sc + rs.getLong("shipment_count");
+
+			list.add(listMonthwise);
+		}
+		listMonthwiseResponse.setMonthwiseList(list);
+		listMonthwiseResponse.setTotalQuantity(Double.parseDouble(String.format("%.2f", qnt)));
+		listMonthwiseResponse.setTotalValueUSD(bd.setScale(2, RoundingMode.DOWN));
+		listMonthwiseResponse.setShipmentCount(sc);
+
+		return listMonthwiseResponse;
+	}
 }

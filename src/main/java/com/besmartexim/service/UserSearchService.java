@@ -1,7 +1,10 @@
 package com.besmartexim.service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,6 +36,8 @@ import com.besmartexim.dto.request.SearchCountUpdateRequest;
 import com.besmartexim.dto.request.SuggestionRequest;
 import com.besmartexim.dto.request.UserSearchRequest;
 import com.besmartexim.dto.response.CountryWiseCountResponse;
+import com.besmartexim.dto.response.GraphResponse;
+import com.besmartexim.dto.response.HsCodeList;
 import com.besmartexim.dto.response.ListCitiesResponse;
 import com.besmartexim.dto.response.ListCountriesResponse;
 import com.besmartexim.dto.response.ListDistinctColumnValuesResponse;
@@ -2044,8 +2049,8 @@ public class UserSearchService {
 		List<UserSearch> userSearchList = null;
 
 //		if (pageable.getPageNumber() > 0)
-			pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
-					Sort.by("createdDate").descending());
+		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+				Sort.by("createdDate").descending());
 
 		if (searchValue != null && searchValue != "")
 			searchValue = "%\"searchValue\"%" + searchValue + "%";
@@ -2310,5 +2315,398 @@ public class UserSearchService {
 
 		return count;
 
+	}
+
+	public Long getValue(UserSearchRequest userSearchRequest, Long accessedBy) throws Exception {
+		Long count = 0l;
+		Connection connection = null;
+		ResultSet rs = null;
+		try {
+			connection = jdbcTemplate.getDataSource().getConnection();
+
+			String proeName = QueryConstant.totalValueInSearchResultAllCountries;
+
+			CallableStatement callableStatement = connection.prepareCall(proeName);
+			callableStatement.setString(1, userSearchRequest.getSearchType().getValue());
+			callableStatement.setString(2, userSearchRequest.getTradeType().getValue());
+			callableStatement.setString(3, userSearchRequest.getFromDate());
+			callableStatement.setString(4, userSearchRequest.getToDate());
+			callableStatement.setString(5, userSearchRequest.getSearchBy().getValue());
+			callableStatement.setString(6, userSearchRequest.getMatchType().getValue());
+			callableStatement.setString(7, queryUtil.listToString(userSearchRequest.getSearchValue()));
+			callableStatement.setString(8, queryUtil.objectToString(userSearchRequest.getCountryCode()));
+			callableStatement.setString(9, queryUtil.listToString(userSearchRequest.getHsCodeList()));
+			callableStatement.setString(10, queryUtil.listToString(userSearchRequest.getHsCode4DigitList()));
+			callableStatement.setString(11, queryUtil.listToString(userSearchRequest.getExporterList()));
+			callableStatement.setString(12, queryUtil.listToString(userSearchRequest.getImporterList()));
+			callableStatement.setString(13, queryUtil.listToString(userSearchRequest.getCityOriginList()));
+			callableStatement.setString(14, queryUtil.listToString(userSearchRequest.getCityDestinationList()));
+			callableStatement.setString(15, queryUtil.listToString(userSearchRequest.getPortOriginList()));
+			callableStatement.setString(16, queryUtil.listToString(userSearchRequest.getPortDestinationList()));
+
+			int MAX_SIZE = 3;
+			int incSize = userSearchRequest.getQueryBuilder().size();
+			List<QueryBuilder> qbList = userSearchRequest.getQueryBuilder();
+
+			for (int i = incSize; i < MAX_SIZE; i++) {
+				QueryBuilder qb = new QueryBuilder();
+				qb.setMatchType(null);
+				qb.setRelation(null);
+				qb.setSearchBy(null);
+				qb.setSearchValue(null);
+				if (qbList != null) {
+					qbList.add(qb);
+				}
+			}
+			callableStatement.setString(17, qbList.get(0).getRelation());
+			callableStatement.setString(18, qbList.get(0).getMatchType());
+			callableStatement.setString(19, qbList.get(0).getSearchBy());
+			callableStatement.setString(20, queryUtil.listToString(qbList.get(0).getSearchValue()));
+
+			callableStatement.setString(21, qbList.get(1).getRelation());
+			callableStatement.setString(22, qbList.get(1).getMatchType());
+			callableStatement.setString(23, qbList.get(1).getSearchBy());
+			callableStatement.setString(24, queryUtil.listToString(qbList.get(1).getSearchValue()));
+
+			callableStatement.setString(25, qbList.get(2).getRelation());
+			callableStatement.setString(26, qbList.get(2).getMatchType());
+			callableStatement.setString(27, qbList.get(2).getSearchBy());
+			callableStatement.setString(28, queryUtil.listToString(qbList.get(2).getSearchValue()));
+
+			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
+			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
+
+			callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
+			callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
+			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
+			callableStatement.setString(34, userSearchRequest.getRangeValueUsdStart());
+			callableStatement.setString(35, userSearchRequest.getRangeValueUsdEnd());
+			callableStatement.setString(36, userSearchRequest.getRangeUnitPriceUsdStart());
+			callableStatement.setString(37, userSearchRequest.getRangeUnitPriceUsdEnd());
+			callableStatement.setString(38, queryUtil.listToString(userSearchRequest.getIncoterm()));
+			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
+			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
+			callableStatement.setString(41, userSearchRequest.getConditionProductDesc());
+
+			callableStatement.setString(42, accessedBy.toString());
+
+			callableStatement.execute();
+
+			rs = callableStatement.getResultSet();
+
+			while (rs.next()) {
+				count = rs.getLong("total_value_usd");
+			}
+
+		} catch (Exception e) {
+			logger.error(e.toString());
+		} finally {
+			if (rs != null)
+				rs.close();
+			if (connection != null)
+				connection.close();
+		}
+		return count;
+	}
+
+	public UserSearchResponse searchInDepth(UserSearchRequest userSearchRequest, Long accessedBy) throws Exception {
+
+		UserSearchResponse userSearchResponse = null;
+
+		Connection connection = null;
+		ResultSet rs = null;
+
+		try {
+			connection = jdbcTemplate.getDataSource().getConnection();
+
+			CallableStatement callableStatement = connection.prepareCall(QueryConstant.searchProcedureTmpForeign);
+
+			callableStatement.setString(1, userSearchRequest.getSearchType().getValue());
+			callableStatement.setString(2, userSearchRequest.getTradeType().getValue());
+			callableStatement.setString(3, userSearchRequest.getFromDate());
+			callableStatement.setString(4, userSearchRequest.getToDate());
+			callableStatement.setString(5, userSearchRequest.getSearchBy().getValue());
+			callableStatement.setString(6, userSearchRequest.getMatchType().getValue());
+			callableStatement.setString(7, queryUtil.listToString(userSearchRequest.getSearchValue()));
+			callableStatement.setString(8, queryUtil.objectToString(userSearchRequest.getCountryCode()));
+			callableStatement.setString(9, queryUtil.listToString(userSearchRequest.getHsCodeList()));
+			callableStatement.setString(10, queryUtil.listToString(userSearchRequest.getHsCode4DigitList()));
+			callableStatement.setString(11, queryUtil.listToString(userSearchRequest.getExporterList()));
+			callableStatement.setString(12, queryUtil.listToString(userSearchRequest.getImporterList()));
+			callableStatement.setString(13, queryUtil.listToString(userSearchRequest.getCityOriginList()));
+			callableStatement.setString(14, queryUtil.listToString(userSearchRequest.getCityDestinationList()));
+			callableStatement.setString(15, queryUtil.listToString(userSearchRequest.getPortOriginList()));
+			callableStatement.setString(16, queryUtil.listToString(userSearchRequest.getPortDestinationList()));
+			callableStatement.setString(17, userSearchRequest.getOrderByColumn());
+			callableStatement.setString(18, userSearchRequest.getOrderByMode());
+			callableStatement.setInt(19, userSearchRequest.getPageNumber());
+			callableStatement.setInt(20, userSearchRequest.getNumberOfRecords());
+
+			int MAX_SIZE = 3;
+			int incSize = userSearchRequest.getQueryBuilder().size();
+			List<QueryBuilder> qbList = userSearchRequest.getQueryBuilder();
+
+			for (int i = incSize; i < MAX_SIZE; i++) {
+				QueryBuilder qb = new QueryBuilder();
+				qb.setMatchType(null);
+				qb.setRelation(null);
+				qb.setSearchBy(null);
+				qb.setSearchValue(null);
+				if (qbList != null) {
+					qbList.add(qb);
+				}
+			}
+			callableStatement.setString(21, qbList.get(0).getRelation());
+			callableStatement.setString(22, qbList.get(0).getMatchType());
+			callableStatement.setString(23, qbList.get(0).getSearchBy());
+			callableStatement.setString(24, queryUtil.listToString(qbList.get(0).getSearchValue()));
+
+			callableStatement.setString(25, qbList.get(1).getRelation());
+			callableStatement.setString(26, qbList.get(1).getMatchType());
+			callableStatement.setString(27, qbList.get(1).getSearchBy());
+			callableStatement.setString(28, queryUtil.listToString(qbList.get(1).getSearchValue()));
+
+			callableStatement.setString(29, qbList.get(2).getRelation());
+			callableStatement.setString(30, qbList.get(2).getMatchType());
+			callableStatement.setString(31, qbList.get(2).getSearchBy());
+			callableStatement.setString(32, queryUtil.listToString(qbList.get(2).getSearchValue()));
+
+			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getShipModeList()));
+			callableStatement.setString(34, queryUtil.listToString(userSearchRequest.getStdUnitList()));
+
+			callableStatement.setString(35, userSearchRequest.getRangeQuantityStart());
+			callableStatement.setString(36, userSearchRequest.getRangeQuantityEnd());
+			callableStatement.setString(37, queryUtil.listToString(userSearchRequest.getConsumptionType()));
+			callableStatement.setString(38, userSearchRequest.getRangeValueUsdStart());
+			callableStatement.setString(39, userSearchRequest.getRangeValueUsdEnd());
+			callableStatement.setString(40, userSearchRequest.getRangeUnitPriceUsdStart());
+			callableStatement.setString(41, userSearchRequest.getRangeUnitPriceUsdEnd());
+			callableStatement.setString(42, queryUtil.listToString(userSearchRequest.getIncoterm()));
+			callableStatement.setString(43, queryUtil.listToString(userSearchRequest.getNotifyParty()));
+			callableStatement.setString(44, queryUtil.listToString(userSearchRequest.getProductDesc()));
+			callableStatement.setString(45, userSearchRequest.getConditionProductDesc());
+
+			callableStatement.setString(46, accessedBy.toString());
+
+			callableStatement.setQueryTimeout(time_in_seconds);
+			// callableStatement.sett
+			callableStatement.execute();
+
+			rs = callableStatement.getResultSet();
+
+			userSearchResponse = userSearchServiceHelper.creteResponse(rs, userSearchRequest);
+			userSearchResponse.setSearchId(userSearchRequest.getSearchId());
+
+		} catch (Exception e) {
+			logger.error(e.toString());
+		} finally {
+			if (rs != null)
+				rs.close();
+			if (connection != null)
+				connection.close();
+		}
+
+		return userSearchResponse;
+	}
+
+	public ListMonthwiseResponse listmonthwise(UserSearchRequest userSearchRequest, Long accessedBy, String checkDepth)
+			throws Exception {
+		Connection connection = null;
+		ResultSet rs = null;
+		ListMonthwiseResponse listMonthwiseResponse = null;
+		try {
+			connection = jdbcTemplate.getDataSource().getConnection();
+
+			String proeName = QueryConstant.listMonthwiseBySearchProcedureAllCountries;
+
+			CallableStatement callableStatement = connection.prepareCall(proeName);
+			callableStatement.setString(1, userSearchRequest.getSearchType().getValue());
+			callableStatement.setString(2, userSearchRequest.getTradeType().getValue());
+			callableStatement.setString(3, userSearchRequest.getFromDate());
+			callableStatement.setString(4, userSearchRequest.getToDate());
+			callableStatement.setString(5, userSearchRequest.getSearchBy().getValue());
+			callableStatement.setString(6, userSearchRequest.getMatchType().getValue());
+			callableStatement.setString(7, queryUtil.listToString(userSearchRequest.getSearchValue()));
+			callableStatement.setString(8, queryUtil.objectToString(userSearchRequest.getCountryCode()));
+			callableStatement.setString(9, queryUtil.listToString(userSearchRequest.getHsCodeList()));
+			callableStatement.setString(10, queryUtil.listToString(userSearchRequest.getHsCode4DigitList()));
+			callableStatement.setString(11, queryUtil.listToString(userSearchRequest.getExporterList()));
+			callableStatement.setString(12, queryUtil.listToString(userSearchRequest.getImporterList()));
+			callableStatement.setString(13, queryUtil.listToString(userSearchRequest.getCityOriginList()));
+			callableStatement.setString(14, queryUtil.listToString(userSearchRequest.getCityDestinationList()));
+			callableStatement.setString(15, queryUtil.listToString(userSearchRequest.getPortOriginList()));
+			callableStatement.setString(16, queryUtil.listToString(userSearchRequest.getPortDestinationList()));
+
+			int MAX_SIZE = 3;
+			int incSize = userSearchRequest.getQueryBuilder().size();
+			List<QueryBuilder> qbList = userSearchRequest.getQueryBuilder();
+
+			for (int i = incSize; i < MAX_SIZE; i++) {
+				QueryBuilder qb = new QueryBuilder();
+				qb.setMatchType(null);
+				qb.setRelation(null);
+				qb.setSearchBy(null);
+				qb.setSearchValue(null);
+				if (qbList != null) {
+					qbList.add(qb);
+				}
+			}
+			callableStatement.setString(17, qbList.get(0).getRelation());
+			callableStatement.setString(18, qbList.get(0).getMatchType());
+			callableStatement.setString(19, qbList.get(0).getSearchBy());
+			callableStatement.setString(20, queryUtil.listToString(qbList.get(0).getSearchValue()));
+
+			callableStatement.setString(21, qbList.get(1).getRelation());
+			callableStatement.setString(22, qbList.get(1).getMatchType());
+			callableStatement.setString(23, qbList.get(1).getSearchBy());
+			callableStatement.setString(24, queryUtil.listToString(qbList.get(1).getSearchValue()));
+
+			callableStatement.setString(25, qbList.get(2).getRelation());
+			callableStatement.setString(26, qbList.get(2).getMatchType());
+			callableStatement.setString(27, qbList.get(2).getSearchBy());
+			callableStatement.setString(28, queryUtil.listToString(qbList.get(2).getSearchValue()));
+
+			callableStatement.setString(29, queryUtil.listToString(userSearchRequest.getShipModeList()));
+			callableStatement.setString(30, queryUtil.listToString(userSearchRequest.getStdUnitList()));
+
+			callableStatement.setString(31, userSearchRequest.getRangeQuantityStart());
+			callableStatement.setString(32, userSearchRequest.getRangeQuantityEnd());
+			callableStatement.setString(33, queryUtil.listToString(userSearchRequest.getConsumptionType()));
+			callableStatement.setString(34, userSearchRequest.getRangeValueUsdStart());
+			callableStatement.setString(35, userSearchRequest.getRangeValueUsdEnd());
+			callableStatement.setString(36, userSearchRequest.getRangeUnitPriceUsdStart());
+			callableStatement.setString(37, userSearchRequest.getRangeUnitPriceUsdEnd());
+			callableStatement.setString(38, queryUtil.listToString(userSearchRequest.getIncoterm()));
+			callableStatement.setString(39, queryUtil.listToString(userSearchRequest.getNotifyParty()));
+			callableStatement.setString(40, queryUtil.listToString(userSearchRequest.getProductDesc()));
+			callableStatement.setString(41, userSearchRequest.getConditionProductDesc());
+
+			callableStatement.setString(42, accessedBy.toString());
+
+			callableStatement.execute();
+
+			rs = callableStatement.getResultSet();
+
+			if ("Depth".equalsIgnoreCase(checkDepth)) {
+				listMonthwiseResponse = userSearchServiceHelper.creteListMonthwiseForInDepth(rs);
+			} else {
+				listMonthwiseResponse = userSearchServiceHelper.creteListMonthwise(rs);
+			}
+
+		} catch (Exception e) {
+			logger.error(e.toString());
+		} finally {
+			if (rs != null)
+				rs.close();
+			if (connection != null)
+				connection.close();
+		}
+		return listMonthwiseResponse;
+
+	}
+
+	public List<GraphResponse> industryGraph(String exImp, String fromDate, String toDate, String hsCode)
+			throws Exception {
+
+		String tableName = null;
+		if (exImp != null) {
+			if (exImp.equalsIgnoreCase("Export"))
+				tableName = "INDUSTRY_EXP";
+			else
+				tableName = "INDUSTRY_IMP";
+		}
+		hsCode = hsCode + "%";
+		Connection connection = null;
+		ResultSet rs = null;
+		List<GraphResponse> response = new ArrayList<GraphResponse>();
+		GraphResponse res = null;
+
+		try {
+			connection = jdbcTemplate.getDataSource().getConnection();
+
+			String customQuery = new StringBuilder()
+					.append("select [MONTH] as monthName,SUM([value]) as monthValue from ").append(tableName)
+					.append(" where [date] between ? and ? and [hs_code] like ? group by [MONTH],monthserial order by monthserial")
+					.toString();
+			logger.info("SQL Query = " + customQuery);
+
+			PreparedStatement pstmt = connection.prepareStatement(customQuery);
+			pstmt.setString(1, fromDate);
+			pstmt.setString(2, toDate);
+			pstmt.setString(3, hsCode);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				res = new GraphResponse();
+				res.setMonthName(rs.getString("monthName"));
+				res.setMonthValue((rs.getString("monthValue") != null)
+						? new BigDecimal(rs.getString("monthValue")).setScale(3, RoundingMode.HALF_UP)
+						: null);
+
+				response.add(res);
+			}
+
+		} catch (Exception e) {
+			logger.error(e.toString());
+		} finally {
+			if (rs != null)
+				rs.close();
+			if (connection != null)
+				connection.close();
+		}
+
+		return response;
+	}
+
+	public List<HsCodeList> getListOfHsCode(String exImp, Integer digit, Long accessedBy) throws Exception {
+
+		String tableName = null;
+		if (exImp != null) {
+			if (exImp.equalsIgnoreCase("Export"))
+				tableName = " [tempdb].[dbo].[EXPORT_FOR_Temp_" + accessedBy + "] ";
+			else
+				tableName = " [tempdb].[dbo].[IMPORT_FOR_Temp_" + accessedBy + "] ";
+		}
+
+		String hsCode = null;
+		if (digit != 8) {
+			hsCode = new StringBuilder().append("hs_code").append(digit).toString();// "hs_code"+digit;
+		} else
+			hsCode = new StringBuilder().append("hs_code").toString();// "hs_code";
+
+		Connection connection = null;
+		ResultSet rs = null;
+
+		List<HsCodeList> response = new ArrayList<HsCodeList>();
+		HsCodeList res = null;
+		try {
+			connection = jdbcTemplate.getDataSource().getConnection();
+
+			String customQuery = new StringBuilder().append("select distinct(").append(hsCode)
+					.append(") as hs_code ,count([month]) as shipment_count from").append(tableName)
+					.append(" group by ").append(hsCode).toString();
+			logger.info("SQL Query = " + customQuery);
+
+			PreparedStatement pstmt = connection.prepareStatement(customQuery);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				res = new HsCodeList();
+				res.setHsCode(rs.getString("hs_code"));
+				res.setShipment_count(rs.getString("shipment_count"));
+				response.add(res);
+			}
+
+		} catch (Exception e) {
+			logger.error(e.toString());
+		} finally {
+			if (rs != null)
+				rs.close();
+			if (connection != null)
+				connection.close();
+		}
+		return response;
 	}
 }
