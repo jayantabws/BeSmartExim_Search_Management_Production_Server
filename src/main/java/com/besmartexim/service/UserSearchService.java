@@ -2048,9 +2048,12 @@ public class UserSearchService {
 		SearchDetails searchDetails = null;
 		List<UserSearch> userSearchList = null;
 
-//		if (pageable.getPageNumber() > 0)
-		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
-				Sort.by("createdDate").descending());
+		if (pageable.getPageNumber() > 0)
+			pageable = PageRequest.of(pageable.getPageNumber()-1, pageable.getPageSize(),
+					Sort.by("createdDate").descending());
+		else
+			pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+					Sort.by("createdDate").descending());
 
 		if (searchValue != null && searchValue != "")
 			searchValue = "%\"searchValue\"%" + searchValue + "%";
