@@ -21,8 +21,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -67,6 +70,12 @@ public class UserSearchService {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+	private RestTemplate restTemplate;
+	
+	@Value("${usermanagement.service.loginstatus}")
+	private String loginstatusUrl;
 
 	@Autowired
 	UserSearchServiceHelper userSearchServiceHelper;
@@ -82,6 +91,29 @@ public class UserSearchService {
 
 	public UserSearchResponse search(UserSearchRequest userSearchRequest, Long accessedBy) throws Exception {
 		UserSearch userSearch = new UserSearch();
+		
+		// ===Start=====  Checking for User is Authenticated or not ========
+		User userEntity = userRepository.findById(accessedBy).orElse(null);
+		if (userEntity == null) {
+			return null;
+		} else {
+			if (userEntity.getIsActive().equalsIgnoreCase("N") || userEntity.getIsDelete().equalsIgnoreCase("Y")) {
+				return null;
+			} else {
+				HttpHeaders headers = new HttpHeaders();
+				headers.setContentType(MediaType.APPLICATION_JSON);
+				headers.add("accessedBy", "" + accessedBy);
+				headers.add("Authorization", "Basic YXBpLWV4aW13YXRjaDp1ZTg0Q1JSZnRAWGhBMyRG");
+
+				ResponseEntity<Long> responseEntity = restTemplate.exchange(loginstatusUrl, HttpMethod.GET,
+						new HttpEntity<Object>(headers), Long.class);
+				Long count = responseEntity.getBody();
+
+				if (count != 1)
+					return null;
+			}
+		}
+		// ===End=====  Checking for User is Authenticated or not ========
 
 		if (userSearchRequest.getSearchId() == null || userSearchRequest.getSearchId().equals("")
 				|| userSearchRequest.getSearchId() == 0) {
@@ -1624,9 +1656,6 @@ public class UserSearchService {
 
 	@Value("${usermanagement.service.url}")
 	private String usermanagementUrl;
-
-	@Autowired
-	private RestTemplate restTemplate;
 
 	public SearchDetailsResponse listAllQueries(Long userId, Long uplineId, String isDownloaded, Long accessedBy,
 			Pageable pageable) throws Exception {

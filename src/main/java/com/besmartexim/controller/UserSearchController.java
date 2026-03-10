@@ -67,7 +67,8 @@ public class UserSearchController {
 		}
 		UserSearchResponse userSearchResponse = userSearchService.search(userSearchRequest, accessedBy);
 
-		// System.out.println(userSearchRequest);
+		if(userSearchResponse == null)
+			return new ResponseEntity<>("UNAUTHORIZED ACCESS",HttpStatus.UNAUTHORIZED);
 
 		return new ResponseEntity<>(userSearchResponse, HttpStatus.CREATED);
 	}
