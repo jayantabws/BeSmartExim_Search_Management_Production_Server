@@ -360,7 +360,7 @@ public class UserSearchController {
 		}
 
 		SearchDetailsResponse searchDetailsResponse = userSearchService.listAllQueriesNew(userId, uplineId,
-				isDownloaded, accessedBy, searchValue, PageRequest.of(pageNumber, pageSize, Sort.by("createdDate").descending()), fd, td);
+				isDownloaded, accessedBy, searchValue, PageRequest.of(pageNumber*pageSize, pageSize, Sort.by("createdDate").descending()), fd, td);
 
 		return ResponseEntity.ok(searchDetailsResponse);
 

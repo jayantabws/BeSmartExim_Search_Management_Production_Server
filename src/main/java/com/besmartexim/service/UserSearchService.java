@@ -1665,7 +1665,7 @@ public class UserSearchService {
 		SearchDetails searchDetails = null;
 		List<UserSearch> userSearchList = null;
 
-		pageable = PageRequest.of(pageable.getPageNumber() * 10, pageable.getPageSize(),
+		pageable = PageRequest.of(pageable.getPageNumber() * pageable.getPageSize(), pageable.getPageSize(),
 				Sort.by("createdDate").descending());
 
 		if (userId != null) {
