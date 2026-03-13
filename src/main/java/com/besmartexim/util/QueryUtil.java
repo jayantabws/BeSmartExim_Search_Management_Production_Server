@@ -1,8 +1,6 @@
 package com.besmartexim.util;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -11,10 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.besmartexim.dto.request.QueryBuilder;
 import com.besmartexim.dto.request.UserSearchRequest;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 @Component
 public class QueryUtil {
@@ -93,10 +88,10 @@ public class QueryUtil {
 	}
 	
 	
-	public static String listToString(List<String> list) {
+	public String listToString(List<String> list) {
 		String out="";
 		if(list!=null && !list.isEmpty()) {
-			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			for (Iterator<String> iterator = list.iterator(); iterator.hasNext();) {
 				String str = (String) iterator.next();
 				out=out+"'"+str+"',";
 			}
@@ -107,7 +102,8 @@ public class QueryUtil {
 		return out;
 	}
 	
-	public static String objectToString(Object list) {
+	@SuppressWarnings("unchecked")
+	public String objectToString(Object list) {
 		String out="";
 		if(list!=null && list instanceof List<?>) {
 			
@@ -125,21 +121,10 @@ public class QueryUtil {
 	}
 	
 	
-	public static void main(String args[]) throws JsonMappingException, JsonProcessingException {
-		
-		Double ss =1.0E-5;
-		System.out.println(new BigDecimal(ss));
-		
-		List<String> list = new ArrayList<String>();
-		list.add("Jayanta");
-		list.add("Palash");
-		System.out.println(listToString(list));
-		String str ="{\"searchType\":\"TRADE\",\"tradeType\":\"EXPORT\",\"fromDate\":\"2024-01-01\",\"toDate\":\"2024-01-31\",\"searchBy\":\"HS_CODE\",\"searchValue\":[\"2915\"],\"matchType\":\"L\",\"countryCode\":[\"ARG\",\"BAN\"],\"searchId\":null,\"hsCodeList\":null,\"hsCode4DigitList\":null,\"exporterList\":null,\"importerList\":null,\"cityOriginList\":null,\"cityDestinationList\":null,\"portOriginList\":null,\"portDestinationList\":null,\"columnName\":null,\"orderByColumn\":\"\",\"orderByMode\":\"desc\",\"pageNumber\":0,\"numberOfRecords\":20,\"queryBuilder\":[],\"shipModeList\":null,\"stdUnitList\":null,\"rangeQuantityStart\":null,\"rangeQuantityEnd\":null,\"consumptionType\":null,\"rangeValueUsdStart\":null,\"rangeValueUsdEnd\":null,\"rangeUnitPriceUsdStart\":null,\"rangeUnitPriceUsdEnd\":null,\"incoterm\":null,\"notifyParty\":null,\"productDesc\":null,\"conditionProductDesc\":null}";	
-				JsonNode jsonNode = new ObjectMapper().readTree(str);
-		System.out.println(jsonNode.get("countryCode"));
-		String country = jsonNode.get("countryCode").toString();
-		System.out.println("String =>"+country);
-		
-		System.out.println(LocalDateTime.now());
-	}
+//	public static void main(String args[]) {
+//		
+//		String ss = "";
+//		String ss1 = " ";
+//		System.out.println(ss.trim().length());
+//	}
 }

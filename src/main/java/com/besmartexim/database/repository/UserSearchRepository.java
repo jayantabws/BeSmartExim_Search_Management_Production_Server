@@ -201,4 +201,5 @@ public interface UserSearchRepository extends JpaRepository<UserSearch, Long> {
 	
 	@Query(nativeQuery = true, value = "SELECT count(*) FROM user_search where created_date between :fromDate and :toDate")
 	long countByDateRange(Date fromDate, Date toDate);//DC12
+
 }
