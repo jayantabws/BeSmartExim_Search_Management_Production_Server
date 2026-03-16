@@ -1722,7 +1722,9 @@ public class UserSearchService {
 //				searchDetails
 //				.setUserSearchQuery(request);
 //			}
-
+			if(!(searchDetails.getUserSearchQuery().getCountryCode() instanceof List<?>)) {
+				searchDetails.getUserSearchQuery().setCountryCode(new ArrayList<String>());
+			}
 			searchDetails.setIsDownloaded(userSearch.getIsDownloaded());
 			searchDetails.setDownloadedDate(userSearch.getDownloadedDate());
 			searchDetails.setCreatedDate(userSearch.getCreatedDate());
