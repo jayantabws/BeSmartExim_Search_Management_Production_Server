@@ -92,10 +92,11 @@ public class UserSearchService {
 	public UserSearchResponse search(UserSearchRequest userSearchRequest, Long accessedBy) throws Exception {
 		UserSearch userSearch = new UserSearch();
 
+		// Verify user is calling from application or not =============Start=============
 		User userEntity = userRepository.findById(accessedBy).orElse(null);
 		if (userEntity == null) {
 			return null;
-		} else {
+		} else if(userEntity.getUplineId() == 0) {
 			if (userEntity.getIsActive().equalsIgnoreCase("N") || userEntity.getIsDelete().equalsIgnoreCase("Y")) {
 				return null;
 			} else {
@@ -111,7 +112,13 @@ public class UserSearchService {
 				if (count != 1)
 					return null;
 			}
+		} else if(userEntity.getUplineId() != 0){
+			userEntity = userRepository.findById(userEntity.getUplineId()).orElse(null);
+			if (userEntity.getIsActive().equalsIgnoreCase("N") || userEntity.getIsDelete().equalsIgnoreCase("Y")) {
+				return null;
+			}
 		}
+		// Verify user is calling from application or not =============End=============
 
 		if (userSearchRequest.getSearchId() == null || userSearchRequest.getSearchId() == 0) {
 			userSearch.setCreatedDate(new Date());
