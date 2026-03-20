@@ -107,9 +107,8 @@ public class UserSearchService {
 
 				ResponseEntity<Long> responseEntity = restTemplate.exchange(loginstatusUrl, HttpMethod.GET,
 						new HttpEntity<Object>(headers), Long.class);
-				Long count = responseEntity.getBody();
 
-				if (count != 1)
+				if (responseEntity.getBody() != 1)
 					return null;
 			}
 		} else if(userEntity.getUplineId() != 0){
@@ -1729,6 +1728,9 @@ public class UserSearchService {
 //				searchDetails
 //				.setUserSearchQuery(request);
 //			}
+
+			//System.out.println(searchDetails.getUserSearchQuery().getCountryCode());
+			//System.out.println(searchDetails.getUserSearchQuery().getCountryCode() instanceof List<?>);
 			if(!(searchDetails.getUserSearchQuery().getCountryCode() instanceof List<?>)) {
 				searchDetails.getUserSearchQuery().setCountryCode(new ArrayList<String>());
 			}
