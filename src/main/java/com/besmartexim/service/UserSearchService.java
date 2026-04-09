@@ -2150,20 +2150,33 @@ public class UserSearchService {
 		return listDistinctColumnValuesResponse;
 	}
 
+	@SuppressWarnings("unchecked")
 	private SearchDetailsResponse convertCountryToList(SearchDetailsResponse searchDetailsResponse) {
 
 		// Converting Country from String to List<String>
 		if (searchDetailsResponse.getQueryList().size() > 0) {
-
-			Object countryCode = searchDetailsResponse.getQueryList().get(0).getUserSearchQuery().getCountryCode();
-
-			if (countryCode instanceof String) {
-				ArrayList<String> list = new ArrayList<String>();
-				list.add((String) countryCode);
-				searchDetailsResponse.getQueryList().get(0).getUserSearchQuery().setCountryCode(list);
+			for(int i=0; i<searchDetailsResponse.getQueryList().size(); i++) {
+				Object countryCode = searchDetailsResponse.getQueryList().get(0).getUserSearchQuery().getCountryCode();
+				if (countryCode instanceof String) {
+					ArrayList<String> list = new ArrayList<String>();
+					list.add((String) countryCode);
+					searchDetailsResponse.getQueryList().get(0).getUserSearchQuery().setCountryCode(list);
+				}
+			}
+			
+			// Removed IND & SEZ from FrontEnd..........
+			for(int i=0; i<searchDetailsResponse.getQueryList().size(); i++) {
+				Object countries = searchDetailsResponse.getQueryList().get(i).getUserSearchQuery().getCountryCode();
+				if (countries instanceof List) {
+					List<String> list = (List<String>) countries;
+					if(list.contains("IND"))
+						list.remove("IND");
+					if(list.contains("SEZ"))
+						list.remove("SEZ");
+					searchDetailsResponse.getQueryList().get(i).getUserSearchQuery().setCountryCode(list);
+				}
 			}
 		}
-
 		return searchDetailsResponse;
 	}
 
